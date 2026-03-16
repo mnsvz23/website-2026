@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manas Vaze — Design Lead</title>
+    <meta name="description" content="Design practitioner partnering with select early-stage founders. 15 years designing products at Swiggy, Truecaller, Ola, and Disney.">
+    <meta property="og:title" content="Manas Vaze — Design Lead">
+    <meta property="og:description" content="Design practitioner partnering with select early-stage founders. I still do the work.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Manas Vaze — Design Lead">
+    <meta name="twitter:description" content="Design practitioner partnering with select early-stage founders. I still do the work.">
+    <meta name="twitter:image" content="og-image.png">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230A0E0A'/><text x='50' y='76' font-size='72' font-family='monospace' font-weight='700' fill='%2333FF99' text-anchor='middle'>/</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+
+    /* ----------------------------------------
+       Reset & Base
+    ---------------------------------------- */
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        background: #0A0E0A;
+        color: #33FF99;
+        font-family: 'Space Mono', monospace;
+        font-size: 16px;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
+    }
+
+    ::selection { background: #33FF99; color: #0A0E0A; }
+
+    /* Scanline overlay */
+    body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+            0deg,
+            transparent, transparent 2px,
+            rgba(0, 0, 0, 0.15) 2px, rgba(0, 0, 0, 0.15) 4px
+        );
+        pointer-events: none;
+        z-index: 9999;
+    }
+
+    .page {
+        max-width: 620px;
+        padding: 8rem 2rem;
+    }
+
+    /* ----------------------------------------
+       Glitch Effect (shared)
+    ---------------------------------------- */
+
+    .glitch {
+        position: relative;
+        display: inline-block;
+        text-decoration: none;
+    }
+
+    .glitch::before,
+    .glitch::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .glitch::before { color: #FF8C42; text-shadow: 2px 0 #FF8C42; }
+    .glitch::after  { color: #00FFFF; text-shadow: -2px 0 #00FFFF; }
+
+    .glitch:hover              { animation: glitch-main 0.4s steps(2) both; }
+    .glitch:hover::before      { opacity: 0.7; animation: glitch-1 0.4s steps(2) both; }
+    .glitch:hover::after       { opacity: 0.7; animation: glitch-2 0.4s steps(2) both; }
+
+    @keyframes glitch-main {
+        0%   { transform: none; }
+        10%  { transform: skewX(-2deg); }
+        15%  { clip-path: inset(40% 0 30% 0); transform: translate(-3px) skewX(2deg); }
+        20%  { clip-path: inset(0); transform: none; }
+        35%  { clip-path: inset(20% 0 55% 0); transform: translate(3px); }
+        40%  { clip-path: inset(0); transform: none; }
+        55%  { clip-path: inset(60% 0 10% 0); transform: translate(-2px) skewX(-1deg); }
+        60%  { clip-path: inset(0); transform: none; }
+        80%  { clip-path: inset(10% 0 70% 0); transform: translate(2px); }
+        85%  { clip-path: inset(0); transform: none; }
+        100% { transform: none; }
+    }
+
+    @keyframes glitch-1 {
+        0%   { transform: none; opacity: 0; }
+        10%  { transform: translate(3px, -1px); opacity: 0.7; }
+        15%  { transform: translate(-2px); clip-path: inset(30% 0 40% 0); }
+        20%  { transform: none; opacity: 0; }
+        35%  { transform: translate(4px, 1px); opacity: 0.5; clip-path: inset(50% 0 20% 0); }
+        40%  { transform: none; opacity: 0; }
+        55%  { transform: translate(-3px, -1px); opacity: 0.7; clip-path: inset(10% 0 60% 0); }
+        60%  { transform: none; opacity: 0; }
+        80%  { transform: translate(2px); opacity: 0.4; clip-path: inset(70% 0 5% 0); }
+        85%  { transform: none; opacity: 0; }
+        100% { opacity: 0; }
+    }
+
+    @keyframes glitch-2 {
+        0%   { transform: none; opacity: 0; }
+        10%  { transform: translate(-3px, 1px); opacity: 0.5; }
+        15%  { transform: translate(2px); clip-path: inset(50% 0 20% 0); }
+        20%  { transform: none; opacity: 0; }
+        35%  { transform: translate(-4px, -1px); opacity: 0.7; clip-path: inset(15% 0 55% 0); }
+        40%  { transform: none; opacity: 0; }
+        55%  { transform: translate(3px, 1px); opacity: 0.5; clip-path: inset(65% 0 10% 0); }
+        60%  { transform: none; opacity: 0; }
+        80%  { transform: translate(-2px); opacity: 0.6; clip-path: inset(5% 0 75% 0); }
+        85%  { transform: none; opacity: 0; }
+        100% { opacity: 0; }
+    }
+
+    /* ----------------------------------------
+       Terminal Prompt
+    ---------------------------------------- */
+
+    .prompt {
+        margin-bottom: 4rem;
+        user-select: none;
+        font-weight: 700;
+        text-transform: uppercase;
+        transition: color 0.15s ease;
+    }
+
+    .prompt.recognized { color: #FF8C42; }
+
+    .cursor {
+        display: inline-block;
+        width: 0.6em;
+        height: 1.1em;
+        background: #33FF99;
+        vertical-align: text-bottom;
+        margin-left: 2px;
+        animation: blink 0.8s step-end infinite;
+    }
+
+    .prompt.recognized .cursor { background: #FF8C42; }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50%      { opacity: 0; }
+    }
+
+    /* ----------------------------------------
+       Hero
+    ---------------------------------------- */
+
+    .author {
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.5rem;
+    }
+
+    h1 {
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.7;
+        margin-bottom: 3.5rem;
+    }
+
+    h1 .dim { color: #1A5C35; }
+
+    .intro {
+        font-size: 1rem;
+        line-height: 1.9;
+        letter-spacing: 0.01em;
+        word-spacing: 0.05em;
+        color: #3D9960;
+    }
+
+    .intro a {
+        color: #3D9960;
+    }
+
+    .intro a:hover {
+        color: #33FF99;
+    }
+
+    .work-cta {
+        margin-top: 1.5rem;
+        font-weight: 700;
+        color: #1A5C35;
+    }
+
+    .work-cta:hover {
+        color: #33FF99;
+    }
+
+    /* ----------------------------------------
+       Logo Carousel
+    ---------------------------------------- */
+
+    .carousel {
+        margin-top: 5rem;
+        overflow: hidden;
+        position: relative;
+        mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+        -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+    }
+
+    .carousel-track {
+        display: flex;
+        align-items: center;
+        gap: 3.5rem;
+        width: max-content;
+    }
+
+    .carousel-logo {
+        flex-shrink: 0;
+        height: 20px;
+        transition: opacity 0.3s ease;
+    }
+
+    .carousel-logo:hover { opacity: 0.7; }
+
+    .carousel-logo.logo-swiggy     { height: 20px; }
+    .carousel-logo.logo-truecaller { height: 18px; }
+    .carousel-logo.logo-sundial    { height: 24px; }
+    .carousel-logo.logo-disney     { height: 28px; }
+    .carousel-logo.logo-ola        { height: 28px; }
+    .carousel-logo.logo-realfast   { height: 19px; }
+
+    /* ----------------------------------------
+       Services
+    ---------------------------------------- */
+
+    .services {
+        margin-top: 8rem;
+    }
+
+    .services-heading {
+        font-weight: 700;
+        color: #1A5C35;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 2.5rem;
+    }
+
+    .service {
+        margin-bottom: 2.5rem;
+    }
+
+    .service-title {
+        font-weight: 700;
+    }
+
+    .service-desc {
+        line-height: 1.7;
+        color: #3D9960;
+        margin-top: 0.25rem;
+    }
+
+    .service-cta {
+        margin-top: 0.5rem;
+        font-weight: 700;
+        color: #1A5C35;
+    }
+
+    .service-cta:hover {
+        color: #33FF99;
+    }
+
+    /* ----------------------------------------
+       Footer
+    ---------------------------------------- */
+
+    footer {
+        margin-top: 8rem;
+        padding-top: 3rem;
+        border-top: 1px solid #133D22;
+    }
+
+    .footer-cta {
+        font-weight: 700;
+        color: #33FF99;
+    }
+
+    .footer-links {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    .footer-links a {
+        color: #1A5C35;
+        text-decoration: none;
+        transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover { color: #3D9960; }
+
+    /* ----------------------------------------
+       Responsive
+    ---------------------------------------- */
+
+    @media (max-width: 600px) {
+        .page { padding: 4rem 1.25rem; }
+        .carousel-track { gap: 2.5rem; }
+    }
+
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <div class="prompt">/<span id="word"></span><span class="cursor"></span></div>
+
+        <div class="author">Manas Vaze</div>
+        <h1>Design practitioner partnering with select early-stage founders.<span class="dim"> I still do the work.</span></h1>
+
+        <p class="intro">I've spent 15 years designing products at <a href="https://www.swiggy.com/" target="_blank" rel="noopener" class="glitch" data-text="Swiggy">Swiggy</a>, <a href="https://www.truecaller.com/" target="_blank" rel="noopener" class="glitch" data-text="Truecaller">Truecaller</a>, <a href="https://www.olacabs.com/" target="_blank" rel="noopener" class="glitch" data-text="Ola">Ola</a>, and <a href="https://www.disney.in/" target="_blank" rel="noopener" class="glitch" data-text="Disney">Disney</a> — building teams, setting up systems, and keeping craft intact as companies scale. Right now I'm at <a href="https://www.realfast.ai/" target="_blank" rel="noopener" class="glitch" data-text="Realfast">Realfast</a>, designing user experiences for agentic salesforce workflows.</p>
+        <p class="work-cta"><a href="mailto:manasvaze23@gmail.com?subject=Request to See Work" class="glitch work-cta" data-text="Request access to selected work →">Request access to selected work →</a></p>
+
+        <div class="carousel">
+            <div class="carousel-track">
+                <img src="logos/truecaller.svg" alt="Truecaller" class="carousel-logo logo-truecaller">
+                <img src="logos/swiggy.svg"     alt="Swiggy"     class="carousel-logo logo-swiggy">
+                <img src="logos/sundial.svg"    alt="Sundial"    class="carousel-logo logo-sundial">
+                <img src="logos/disney.svg"     alt="Disney"     class="carousel-logo logo-disney">
+                <img src="logos/ola.svg"        alt="Ola"        class="carousel-logo logo-ola">
+                <img src="logos/realfast.svg"   alt="Realfast"   class="carousel-logo logo-realfast">
+                <img src="logos/truecaller.svg" alt="Truecaller" class="carousel-logo logo-truecaller">
+                <img src="logos/swiggy.svg"     alt="Swiggy"     class="carousel-logo logo-swiggy">
+                <img src="logos/sundial.svg"    alt="Sundial"    class="carousel-logo logo-sundial">
+                <img src="logos/disney.svg"     alt="Disney"     class="carousel-logo logo-disney">
+                <img src="logos/ola.svg"        alt="Ola"        class="carousel-logo logo-ola">
+                <img src="logos/realfast.svg"   alt="Realfast"   class="carousel-logo logo-realfast">
+            </div>
+        </div>
+
+        <section class="services">
+            <div class="services-heading">How I Work</div>
+            <div class="service">
+                <div class="service-title">0 to 1</div>
+                <div class="service-desc">You have an idea but nothing built yet. I design the first version of your product.</div>
+                <a href="mailto:manasvaze23@gmail.com?subject=0 to 1 Inquiry" class="glitch service-cta" data-text="Get in Touch →">Get in Touch →</a>
+            </div>
+            <div class="service">
+                <div class="service-title">Refine</div>
+                <div class="service-desc">You already have something live, but it needs work. I make it clearer, cleaner, and easier to use.</div>
+                <a href="mailto:manasvaze23@gmail.com?subject=Refine Inquiry" class="glitch service-cta" data-text="Get in Touch →">Get in Touch →</a>
+            </div>
+            <div class="service">
+                <div class="service-title">Future Sprint</div>
+                <div class="service-desc">A two week sprint to explore new concepts, features, and directions for your product.</div>
+                <a href="mailto:manasvaze23@gmail.com?subject=Future Sprint Inquiry" class="glitch service-cta" data-text="Get in Touch →">Get in Touch →</a>
+            </div>
+            <div class="service">
+                <div class="service-title">Ongoing</div>
+                <div class="service-desc">I work alongside your team on a long term basis, designing, improving, and shipping over time.</div>
+                <a href="mailto:manasvaze23@gmail.com?subject=Ongoing Inquiry" class="glitch service-cta" data-text="Get in Touch →">Get in Touch →</a>
+            </div>
+        </section>
+
+        <footer>
+            <a href="mailto:manasvaze23@gmail.com" class="glitch footer-cta" data-text="Get in Touch →">Get in Touch →</a>
+            <div class="footer-links">
+                <a href="https://www.linkedin.com/in/manas-vaze/" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="https://x.com/manasvaze" target="_blank" rel="noopener">X/Twitter</a>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+    (function () {
+        var words = ['strategy', 'systems', 'craft', 'ship'];
+        var el    = document.getElementById('word');
+        var cmd   = document.querySelector('.prompt');
+        var wi    = 0, ci = 0, deleting = false;
+
+        function tick() {
+            var w = words[wi];
+            if (!deleting) {
+                el.textContent = w.slice(0, ++ci);
+                if (ci >= w.length) {
+                    cmd.classList.add('recognized');
+                    return setTimeout(function () {
+                        deleting = true;
+                        cmd.classList.remove('recognized');
+                        tick();
+                    }, 1200);
+                }
+                setTimeout(tick, 80);
+            } else {
+                el.textContent = w.slice(0, --ci);
+                if (ci <= 0) {
+                    deleting = false;
+                    wi = (wi + 1) % words.length;
+                    return setTimeout(tick, 300);
+                }
+                setTimeout(tick, 50);
+            }
+        }
+        tick();
+
+        var track  = document.querySelector('.carousel-track');
+        var offset = 0, paused = false;
+
+        track.addEventListener('mouseenter', function () { paused = true; });
+        track.addEventListener('mouseleave', function () { paused = false; });
+
+        (function scroll() {
+            if (!paused) {
+                offset += 0.3;
+                var half = track.scrollWidth / 2;
+                if (offset >= half) offset -= half;
+                track.style.transform = 'translateX(-' + offset + 'px)';
+            }
+            requestAnimationFrame(scroll);
+        })();
+    })();
+    </script>
+</body>
+</html>
