@@ -25,17 +25,20 @@
 
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+    html { overflow-x: hidden; }
+
     body {
         background: #0A0E0A;
         color: #33FF99;
         font-family: 'Space Mono', monospace;
-        font-size: 16px;
+        font-size: clamp(12px, 2.8vw, 16px);
         min-height: 100vh;
         display: flex;
         justify-content: center;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         overflow-x: hidden;
+        width: 100%;
     }
 
     ::selection { background: #33FF99; color: #0A0E0A; }
@@ -56,7 +59,11 @@
 
     .page {
         max-width: 620px;
+        width: 100%;
+        min-width: 0;
         padding: 8rem 2rem;
+        overflow-wrap: break-word;
+        word-break: break-word;
     }
 
     /* ----------------------------------------
@@ -313,8 +320,29 @@
     ---------------------------------------- */
 
     @media (max-width: 600px) {
-        .page { padding: 4rem 1.25rem; }
-        .carousel-track { gap: 2.5rem; }
+        .page { padding: 3rem 1.25rem; }
+        .prompt { margin-bottom: 2.5rem; }
+        h1 { line-height: 1.6; margin-bottom: 2.5rem; letter-spacing: 0; }
+        .intro { letter-spacing: 0; word-spacing: 0; line-height: 1.75; }
+        .carousel { margin-top: 3rem; }
+        .carousel-track { gap: 2rem; }
+        .services { margin-top: 4.5rem; }
+        .services-heading { margin-bottom: 1.5rem; }
+        .service { margin-bottom: 1.75rem; }
+        footer { margin-top: 4.5rem; padding-top: 2rem; }
+        .footer-links { flex-wrap: wrap; gap: 1rem; }
+        .glitch, .footer-links a { padding: 0.3rem 0; }
+    }
+
+    @media (max-width: 380px) {
+        .page { padding: 2.5rem 1rem; }
+    }
+
+    /* Touch devices: disable glitch hover */
+    @media (hover: none) {
+        .glitch:hover { animation: none; }
+        .glitch:hover::before { opacity: 0; animation: none; }
+        .glitch:hover::after  { opacity: 0; animation: none; }
     }
 
     </style>
@@ -418,6 +446,8 @@
 
         track.addEventListener('mouseenter', function () { paused = true; });
         track.addEventListener('mouseleave', function () { paused = false; });
+        track.addEventListener('touchstart', function () { paused = true; }, { passive: true });
+        track.addEventListener('touchend', function () { paused = false; }, { passive: true });
 
         (function scroll() {
             if (!paused) {
