@@ -247,6 +247,48 @@
     .carousel-logo.logo-realfast   { height: 19px; }
 
     /* ----------------------------------------
+       Blog Post
+    ---------------------------------------- */
+
+    /* ----------------------------------------
+       Blog Link (homepage)
+    ---------------------------------------- */
+
+    .blog-link {
+        margin-top: 8rem;
+    }
+
+    .blog-link-label {
+        font-weight: 700;
+        color: #1A5C35;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 1rem;
+    }
+
+    .blog-link a {
+        display: block;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .blog-link-title {
+        font-weight: 700;
+        color: #33FF99;
+        transition: color 0.15s ease;
+    }
+
+    .blog-link a:hover .blog-link-title {
+        color: #00FFFF;
+    }
+
+    .blog-link-date {
+        color: #1A5C35;
+        margin-top: 0.25rem;
+    }
+
+
+    /* ----------------------------------------
        Services
     ---------------------------------------- */
 
@@ -326,6 +368,7 @@
         .intro { letter-spacing: 0; word-spacing: 0; line-height: 1.75; }
         .carousel { margin-top: 3rem; }
         .carousel-track { gap: 2rem; }
+        .blog-link { margin-top: 3rem; }
         .services { margin-top: 4.5rem; }
         .services-heading { margin-bottom: 1.5rem; }
         .service { margin-bottom: 1.75rem; }
@@ -343,6 +386,11 @@
         .glitch:hover { animation: none; }
         .glitch:hover::before { opacity: 0; animation: none; }
         .glitch:hover::after  { opacity: 0; animation: none; }
+    }
+
+    .page-transition {
+        opacity: 0;
+        transition: opacity 0.3s ease;
     }
 
     </style>
@@ -373,6 +421,22 @@
                 <img src="logos/ola.svg"        alt="Ola"        class="carousel-logo logo-ola">
                 <img src="logos/realfast.svg"   alt="Realfast"   class="carousel-logo logo-realfast">
             </div>
+        </div>
+
+        <div class="blog-link">
+            <div class="blog-link-label">Log Entries</div>
+            <a href="case-study-exowork.html">
+                <div class="blog-link-title glitch" data-text="Taming the Vibe — ExoWork Case Study →">Taming the Vibe — ExoWork Case Study →</div>
+                <div class="blog-link-date">April 2026</div>
+            </a>
+            <a href="case-study-exodesigner.html" style="margin-top: 1.5rem; display: block;">
+                <div class="blog-link-title glitch" data-text="ExoDesigner — A Design Reviewer on Every Branch →">ExoDesigner — A Design Reviewer on Every Branch →</div>
+                <div class="blog-link-date">April 2026</div>
+            </a>
+            <a href="ai-design-partner.html" style="margin-top: 1.5rem; display: block;">
+                <div class="blog-link-title glitch" data-text="Using AI as a Design Partner →">Using AI as a Design Partner →</div>
+                <div class="blog-link-date">March 2026</div>
+            </a>
         </div>
 
         <section class="services">
@@ -408,6 +472,7 @@
         </footer>
 
     </div>
+
 
     <script>
     (function () {
@@ -458,7 +523,19 @@
             }
             requestAnimationFrame(scroll);
         })();
+
     })();
+
+    // Page transition: glitch flash on internal links
+    document.querySelectorAll('a[href]').forEach(function (a) {
+        var href = a.getAttribute('href');
+        if (!href || href.startsWith('http') || href.startsWith('mailto') || href.startsWith('#')) return;
+        a.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.body.classList.add('page-transition');
+            setTimeout(function () { window.location.href = href; }, 300);
+        });
+    });
     </script>
 </body>
 </html>

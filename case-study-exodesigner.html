@@ -4,428 +4,107 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ExoDesigner — A Design Reviewer on Every Branch</title>
-<meta name="description" content="A design system that lives inside the AI, enforcing standards at generation time instead of review time.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0c0a09;
-  --bg2: #1c1917;
-  --bg3: #292524;
-  --text: #e7e5e4;
-  --text2: #a8a29e;
-  --text3: #78716c;
-  --accent: #f59e0b;
-  --red: #ef4444;
-  --green: #22c55e;
-  --serif: 'Libre Baskerville', Georgia, serif;
-  --sans: 'Inter', -apple-system, sans-serif;
-  --col: 720px;
-  --gap: 24px;
-  --section-gap: 80px;
-  --block-gap: 40px;
-  --text-gap: 20px;
-}
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
 body {
-  background: var(--bg); color: var(--text);
-  font-family: var(--sans); font-size: 17px; line-height: 1.7;
+  background: #0c0a09;
+  color: #e7e5e4;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   -webkit-font-smoothing: antialiased;
 }
-::selection { background: var(--accent); color: var(--bg); }
-img { max-width: 100%; display: block; }
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
-
-.col {
-  max-width: var(--col);
-  margin: 0 auto;
-  padding: 0 var(--gap);
+.lock {
+  text-align: center;
+  padding: 24px;
 }
-section { padding: var(--section-gap) 0; }
-section + section { border-top: 1px solid var(--bg3); }
-.eyebrow {
-  font-size: 12px; color: var(--accent);
-  letter-spacing: 0.12em; text-transform: uppercase;
-  margin-bottom: 12px;
+.lock p {
+  font-size: 14px;
+  color: #78716c;
+  margin-bottom: 24px;
 }
-h1 {
-  font-family: var(--serif); font-size: clamp(36px, 6vw, 64px);
-  line-height: 1.1; font-weight: 400;
-  margin-bottom: var(--text-gap);
+.lock input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #292524;
+  color: #e7e5e4;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 16px;
+  padding: 8px 0;
+  width: 200px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s;
 }
-h2 {
-  font-family: var(--serif); font-size: clamp(24px, 3.5vw, 36px);
-  line-height: 1.2; font-weight: 400;
-  margin-bottom: var(--text-gap);
+.lock input::placeholder { color: #292524; }
+.lock input:focus { border-color: #78716c; }
+.lock input.error {
+  border-color: #ef4444;
+  animation: shake 0.3s ease;
 }
-h3 {
-  font-family: var(--serif); font-size: 20px; font-weight: 400;
-  margin-bottom: 10px;
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
 }
-p { color: var(--text2); margin-bottom: var(--text-gap); }
-p:last-child { margin-bottom: 0; }
-p strong { color: var(--text); font-weight: 600; }
-code {
-  font-size: 15px;
-  background: var(--bg2); padding: 2px 6px; border-radius: 3px;
+.lock .hint {
+  font-size: 12px;
+  color: #292524;
+  margin-top: 16px;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
-.lead { font-size: 19px; line-height: 1.6; color: var(--text2); }
-.hero { padding: 100px 0 var(--block-gap); }
-.hero-img {
-  width: 100%; height: auto;
-  border-radius: 6px;
-  margin-top: var(--block-gap);
-}
-.art-credit {
-  font-size: 11px; color: var(--text3); margin-top: 10px; opacity: 0.6;
-}
-.grid-2 {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 1px; background: var(--bg3); border: 1px solid var(--bg3);
-  border-radius: 8px; overflow: hidden;
-  margin-top: var(--block-gap);
-}
-.grid-2 > div { background: var(--bg2); padding: var(--gap); }
-.grid-2 .label {
-  font-size: 11px; color: var(--text3); text-transform: uppercase;
-  letter-spacing: 0.06em; margin-bottom: 4px;
-}
-.grid-2 .value { font-size: 15px; color: var(--text); margin-bottom: 0; }
-.card-stack { display: grid; gap: 12px; margin-top: var(--block-gap); }
-.card {
-  background: var(--bg2); border: 1px solid var(--bg3);
-  border-radius: 8px; padding: var(--gap);
-}
-.card p { font-size: 15px; line-height: 1.6; margin-bottom: 0; }
-.cmd-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 12px; margin-top: var(--block-gap);
-}
-.cmd-card {
-  background: var(--bg2); border: 1px solid var(--bg3);
-  border-radius: 8px; padding: var(--gap);
-}
-.cmd-card .cmd {
-  font-size: 14px; color: var(--accent);
-  margin-bottom: 8px; display: block;
-}
-.cmd-card h3 { font-size: 16px; margin-bottom: 6px; }
-.cmd-card p { font-size: 14px; color: var(--text3); line-height: 1.5; margin-bottom: 0; }
-.arch {
-  background: var(--bg2); border: 1px solid var(--bg3);
-  border-radius: 8px; padding: var(--gap);
-  margin-top: var(--block-gap);
-}
-.arch-layer {
-  display: flex; align-items: baseline; gap: 12px;
-  padding: 10px 0; border-bottom: 1px solid var(--bg3);
-}
-.arch-layer:last-child { border-bottom: none; }
-.arch-label {
-  min-width: 90px; font-size: 11px; color: var(--text3);
-  text-transform: uppercase; letter-spacing: 0.06em; flex-shrink: 0;
-}
-.arch-items { display: flex; gap: 6px; flex-wrap: wrap; }
-.chip {
-  background: var(--bg3); padding: 3px 10px; border-radius: 4px;
-  font-size: 12px; color: var(--text2);
-}
-.chip.hi { border: 1px solid var(--accent); color: var(--accent); background: transparent; }
-.ba-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-  margin-top: var(--block-gap);
-}
-.ba-col h4 {
-  font-size: 11px; text-transform: uppercase;
-  letter-spacing: 0.08em; margin-bottom: 10px;
-}
-.ba-col.before h4 { color: var(--red); }
-.ba-col.after h4 { color: var(--green); }
-.ba-col ul { list-style: none; }
-.ba-col li {
-  padding: 5px 0; color: var(--text3); font-size: 14px;
-  border-bottom: 1px solid var(--bg3);
-}
-.ba-col li:last-child { border-bottom: none; }
-.outcome-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 12px; margin-top: var(--block-gap);
-}
-.outcome-card {
-  background: var(--bg2); border: 1px solid var(--bg3);
-  border-radius: 8px; padding: var(--gap);
-}
-.outcome-card .num {
-  font-family: var(--serif); font-size: 28px; font-weight: 400;
-  line-height: 1; margin-bottom: 6px;
-}
-.outcome-card .desc {
-  font-size: 13px; color: var(--text2); line-height: 1.4; margin-bottom: 0;
-}
-
-@media (max-width: 640px) {
-  :root { --section-gap: 60px; --block-gap: 32px; }
-  .grid-2, .cmd-grid, .ba-grid, .outcome-grid { grid-template-columns: 1fr; }
-  .hero { padding-top: 60px; }
-}
+.lock input.error ~ .hint { opacity: 1; color: #78716c; }
 </style>
 </head>
 <body>
-
-<div class="hero">
-  <div class="col">
-    <div class="eyebrow">Case Study — ExoDesigner, 2026</div>
-    <h1>ExoDesigner — A design reviewer on every branch</h1>
-    <p class="lead">
-      After three months of fixing vibe-coded UX by hand, I built a design system that lives inside the AI itself. It enforces standards at generation time, not review time.
-    </p>
-    <img class="hero-img" src="artwork/hero.avif" alt="Gutenberg inspecting a proof from his printing press">
-    <div class="art-credit">Gutenberg Inspecting a Proof — after a painting attributed to Jean-Antoine Laurent, 19th century</div>
-  </div>
+<div class="lock">
+  <p>This page is protected</p>
+  <input type="password" id="pw" placeholder="Password" autofocus>
+  <div class="hint">Incorrect password</div>
 </div>
+<script>
+(function() {
+  var payload = "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";
+  var salt = new TextEncoder().encode("manasvaze-portfolio");
+  var input = document.getElementById("pw");
 
-<section>
-  <div class="col">
-    <div class="eyebrow">Context</div>
-    <h2>Why I built this</h2>
-    <p>
-      During my work on <a href="case-study-exowork.html">ExoWork</a> at Realfast, I shipped 90 PRs fixing UX problems that AI-generated code had created. I touched the permission bar 13 times. Redesigned the navigation 3 times. Rewrote the same categories of copy over and over. The fixes worked, but the process didn't scale.
-    </p>
-    <p>
-      The core issue was that traditional design systems don't reach the AI. A Figma library or a style guide doc assumes a human reads it and applies the rules during implementation. But when Claude Code is generating the components, nobody reads the style guide. The AI just produces functional code with hardcoded hex values, inconsistent spacing, and developer-facing copy.
-    </p>
-    <p>
-      I needed a design system that lives where the AI already works: in the codebase, in the terminal, at the moment the code is being written.
-    </p>
+  input.addEventListener("keydown", function(e) {
+    if (e.key !== "Enter") return;
+    input.classList.remove("error");
+    var pw = input.value;
+    if (!pw) return;
 
-    <div class="grid-2">
-      <div><div class="label">Role</div><div class="value">Design Lead, sole builder</div></div>
-      <div><div class="label">Company</div><div class="value">Realfast</div></div>
-      <div><div class="label">Stack</div><div class="value">TypeScript, Claude Code slash commands</div></div>
-      <div><div class="label">Frameworks</div><div class="value">React, Salesforce LWC, Rails</div></div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="col">
-    <div class="eyebrow">Problem</div>
-    <h2>Why design systems fail with AI</h2>
-    <p>
-      After spending three months on ExoWork, I had a pretty clear picture of how vibe-coded UX breaks. It's not random. The AI makes the same category of mistake repeatedly, and you end up fixing the same things over and over.
-    </p>
-
-    <div class="card-stack">
-      <div class="card">
-        <h3>Review-time gates don't scale</h3>
-        <p>When AI can produce a full feature in minutes, post-hoc design review becomes a bottleneck. Teams route around it. The system needs to constrain at generation time, not catch problems after the fact.</p>
-      </div>
-      <div class="card">
-        <h3>Figma doesn't reach the AI</h3>
-        <p>A design system in a separate tool is invisible to the code generator. If it's not in the terminal, in the codebase, or in the prompt, it doesn't exist as far as the AI is concerned.</p>
-      </div>
-      <div class="card">
-        <h3>Violations are systematic</h3>
-        <p>Hardcoded color values, missing design tokens, developer-facing copy, platform assumptions. The AI doesn't make random errors. It makes the same kinds of errors, which means you can write rules to catch them.</p>
-      </div>
-      <div class="card">
-        <h3>Every fix is a design rule waiting to be formalised</h3>
-        <p>Each of the 90 PRs I shipped on ExoWork encoded some piece of design knowledge. The fix history is basically the specification for the design system, if you take the time to extract it.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="col">
-    <div class="eyebrow">Solution</div>
-    <h2>A design system that runs as code</h2>
-    <p>
-      ExoDesigner is a set of Claude Code slash commands that scan, enforce, and generate design-compliant code. When you (or the AI) type <code>/design-audit</code>, the system scans the codebase across six categories: visual hierarchy, interaction patterns, component consistency, form design, polish, and responsive behavior. It returns a report with specific file paths and suggested fixes.
-    </p>
-    <p>
-      <code>/design-fix</code> auto-corrects what it can. It replaces hardcoded hex values with design tokens, fixes spacing inconsistencies, and adds missing accessibility attributes. <code>/design-init</code> detects the project framework (React, Salesforce LWC, or Rails) and generates the right theme config and CSS variables.
-    </p>
-    <p>
-      The key architectural decision was to have the design system write rules into CLAUDE.md, the file that Claude Code reads before every response. This means the AI follows design constraints not because someone told it to, but because the constraints are part of its context. The design system becomes the AI's design instinct.
-    </p>
-  </div>
-</section>
-
-<section>
-  <div class="col">
-    <div class="eyebrow">Architecture</div>
-    <h2>How it works</h2>
-    <p>
-      The system is TypeScript, modular, and test-covered. Analyzers scan the codebase and produce structured violation reports. Fixers auto-correct what's deterministic. Generators produce project-specific configuration: CSS variables, CLAUDE.md design rules, and compliance reports. Framework detection is automatic, so the same commands adapt their output for React with Tailwind versus Salesforce LWC with SLDS.
-    </p>
-
-    <div class="arch">
-      <div class="arch-layer">
-        <span class="arch-label">Commands</span>
-        <div class="arch-items">
-          <span class="chip hi">/design-init</span>
-          <span class="chip hi">/design-audit</span>
-          <span class="chip hi">/design-fix</span>
-          <span class="chip hi">/design-check</span>
-          <span class="chip">/design-theme</span>
-          <span class="chip">/design-report</span>
-          <span class="chip">/design-generate</span>
-          <span class="chip">/design-redesign</span>
-        </div>
-      </div>
-      <div class="arch-layer">
-        <span class="arch-label">Analyzers</span>
-        <div class="arch-items">
-          <span class="chip">Project Detect</span>
-          <span class="chip">Accessibility</span>
-          <span class="chip">Theme Scan</span>
-          <span class="chip">Component Scan</span>
-          <span class="chip">Quality Scan</span>
-          <span class="chip">Pattern Detect</span>
-        </div>
-      </div>
-      <div class="arch-layer">
-        <span class="arch-label">Fixers</span>
-        <div class="arch-items">
-          <span class="chip">Color</span>
-          <span class="chip">Spacing</span>
-          <span class="chip">Accessibility</span>
-        </div>
-      </div>
-      <div class="arch-layer">
-        <span class="arch-label">Generators</span>
-        <div class="arch-items">
-          <span class="chip">Theme CSS</span>
-          <span class="chip">CLAUDE.md Rules</span>
-          <span class="chip">Audit Report</span>
-        </div>
-      </div>
-      <div class="arch-layer">
-        <span class="arch-label">Frameworks</span>
-        <div class="arch-items">
-          <span class="chip">React + Tailwind</span>
-          <span class="chip">Salesforce LWC</span>
-          <span class="chip">Rails + Tailwind</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="col">
-    <div class="eyebrow">Toolkit</div>
-    <h2>Eight commands</h2>
-
-    <div class="cmd-grid">
-      <div class="cmd-card">
-        <span class="cmd">/design-init</span>
-        <h3>Framework detection</h3>
-        <p>Detects React, LWC, or Rails. Generates theme config, CSS variables, and CLAUDE.md rules.</p>
-      </div>
-      <div class="cmd-card">
-        <span class="cmd">/design-audit</span>
-        <h3>Six-category audit</h3>
-        <p>Visual hierarchy, interactions, components, forms, polish, responsive. Returns file paths and fixes.</p>
-      </div>
-      <div class="cmd-card">
-        <span class="cmd">/design-fix</span>
-        <h3>Auto-correction</h3>
-        <p>Replaces hardcoded colors with tokens, fixes spacing, adds accessibility attributes.</p>
-      </div>
-      <div class="cmd-card">
-        <span class="cmd">/design-check</span>
-        <h3>Quick compliance</h3>
-        <p>Fast pass/fail before commit. Catches regressions in spacing, color, and accessibility.</p>
-      </div>
-      <div class="cmd-card">
-        <span class="cmd">/design-theme</span>
-        <h3>Theme generation</h3>
-        <p>Brand palette with semantic roles. Primary, secondary, accent with automatic dark/light variants.</p>
-      </div>
-      <div class="cmd-card">
-        <span class="cmd">/design-report</span>
-        <h3>Compliance report</h3>
-        <p>Full audit output with severity levels, grouped by category. Exportable and trackable over time.</p>
-      </div>
-      <div class="cmd-card">
-        <span class="cmd">/design-generate</span>
-        <h3>Component generation</h3>
-        <p>New components that conform to the system from the start. No post-hoc cleanup needed.</p>
-      </div>
-      <div class="cmd-card">
-        <span class="cmd">/design-redesign</span>
-        <h3>Guided redesign</h3>
-        <p>Take an existing screen and redesign it within the system's constraints.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="col">
-    <div class="eyebrow">Impact</div>
-    <h2>What changes</h2>
-    <p>
-      The shift is from catching design problems after the code is written to preventing them while the code is being generated. It's the difference between a review gate and a generation constraint.
-    </p>
-
-    <div class="ba-grid">
-      <div class="ba-col before">
-        <h4>Without ExoDesigner</h4>
-        <ul>
-          <li>AI generates components with hardcoded #362CFF</li>
-          <li>Spacing is a mix of 12px, 15px, 14px in one view</li>
-          <li>No ARIA labels on interactive elements</li>
-          <li>Light mode contrast at 2.5:1 on buttons</li>
-          <li>Error text: SDK_STREAM_ERROR</li>
-          <li>Design review catches issues after the PR</li>
-          <li>Same fix applied 13 times over 3 months</li>
-        </ul>
-      </div>
-      <div class="ba-col after">
-        <h4>With ExoDesigner</h4>
-        <ul>
-          <li>AI uses var(--color-primary) from CLAUDE.md</li>
-          <li>4px spacing grid enforced by design-check</li>
-          <li>Accessibility fixer adds ARIA attributes automatically</li>
-          <li>Contrast validated against WCAG AA at scan time</li>
-          <li>Copy rules in CLAUDE.md prevent jargon</li>
-          <li>Violations caught before the code exists</li>
-          <li>Fix encoded once, enforced forever</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="outcome-grid">
-      <div class="outcome-card"><div class="num">8</div><div class="desc">Slash commands</div></div>
-      <div class="outcome-card"><div class="num">7</div><div class="desc">Analyzer modules</div></div>
-      <div class="outcome-card"><div class="num">3</div><div class="desc">Auto-fixers</div></div>
-      <div class="outcome-card"><div class="num">6</div><div class="desc">Audit categories</div></div>
-      <div class="outcome-card"><div class="num">3</div><div class="desc">Framework targets</div></div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="col">
-    <div class="eyebrow">Reflection</div>
-    <h2>What I learned</h2>
-    <p>
-      <strong>The design system has to live where the AI works.</strong> A Figma file is for the designer. CLAUDE.md is for the machine. Both are necessary, but only one of them scales when the AI is writing the code.
-    </p>
-    <p>
-      <strong>One person can't audit every AI-generated component forever.</strong> The 90 PRs I shipped on ExoWork were necessary, but that approach doesn't hold up over time. A system that runs every time, doesn't get tired, and doesn't skip the check because the deadline is tomorrow, that's what actually works.
-    </p>
-    <p>
-      <strong>Fix history is the spec.</strong> Every PR I shipped during ExoWork was a design rule waiting to be formalised. ExoDesigner didn't come from a design exercise. It came from three months of seeing the same problems and writing down how to prevent them.
-    </p>
-  </div>
-</section>
-
+    crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveBits"])
+    .then(function(k) {
+      return crypto.subtle.deriveBits({ name: "PBKDF2", salt: salt, iterations: 100000, hash: "SHA-256" }, k, 256);
+    })
+    .then(function(bits) {
+      return crypto.subtle.importKey("raw", bits, { name: "AES-GCM" }, false, ["decrypt"]);
+    })
+    .then(function(aesKey) {
+      var raw = Uint8Array.from(atob(payload), function(c) { return c.charCodeAt(0); });
+      var nonce = raw.slice(0, 12);
+      var ct = raw.slice(12);
+      return crypto.subtle.decrypt({ name: "AES-GCM", iv: nonce }, aesKey, ct);
+    })
+    .then(function(plain) {
+      var html = new TextDecoder().decode(plain);
+      document.open();
+      document.write(html);
+      document.close();
+    })
+    .catch(function() {
+      input.classList.add("error");
+      input.select();
+    });
+  });
+})();
+</script>
 </body>
 </html>
