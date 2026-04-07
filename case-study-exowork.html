@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taming the Vibe — ExoWork Case Study</title>
+<meta name="description" content="Bringing design discipline to a vibe-coded AI co-pilot for Salesforce consultants. 90 PRs in 3 months, working directly on a live codebase.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0a09;
+  --bg2: #1c1917;
+  --bg3: #292524;
+  --text: #e7e5e4;
+  --text2: #a8a29e;
+  --text3: #78716c;
+  --accent: #f59e0b;
+  --serif: 'Libre Baskerville', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --col: 720px;
+  --gap: 24px;
+  --section-gap: 80px;
+  --block-gap: 40px;
+  --text-gap: 20px;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: var(--sans); font-size: 17px; line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--accent); color: var(--bg); }
+img { max-width: 100%; display: block; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.col {
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 0 var(--gap);
+}
+
+section {
+  padding: var(--section-gap) 0;
+}
+section + section {
+  border-top: 1px solid var(--bg3);
+}
+.eyebrow {
+  font-size: 12px; color: var(--accent);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+h1 {
+  font-family: var(--serif); font-size: clamp(36px, 6vw, 64px);
+  line-height: 1.1; font-weight: 400;
+  margin-bottom: var(--text-gap);
+}
+h2 {
+  font-family: var(--serif); font-size: clamp(24px, 3.5vw, 36px);
+  line-height: 1.2; font-weight: 400;
+  margin-bottom: var(--text-gap);
+}
+h3 {
+  font-family: var(--serif); font-size: 20px; font-weight: 400;
+  margin-bottom: 10px;
+}
+p { color: var(--text2); margin-bottom: var(--text-gap); }
+p:last-child { margin-bottom: 0; }
+p strong { color: var(--text); font-weight: 600; }
+code {
+  font-size: 15px;
+  background: var(--bg2); padding: 2px 6px; border-radius: 3px;
+}
+.lead {
+  font-size: 19px; line-height: 1.6; color: var(--text2);
+}
+.hero {
+  padding: 100px 0 var(--block-gap);
+}
+.hero-img {
+  width: 100%; height: auto; border-radius: 6px;
+  margin-top: var(--block-gap);
+  filter: contrast(1.08) brightness(0.85);
+}
+.art-credit {
+  font-size: 11px; color: var(--text3); margin-top: 10px; opacity: 0.6;
+}
+.grid-2 {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--bg3); border: 1px solid var(--bg3);
+  border-radius: 8px; overflow: hidden;
+  margin-top: var(--block-gap);
+}
+.grid-2 > div {
+  background: var(--bg2); padding: var(--gap);
+}
+.grid-2 .label {
+  font-size: 11px; color: var(--text3); text-transform: uppercase;
+  letter-spacing: 0.06em; margin-bottom: 4px;
+}
+.grid-2 .value { font-size: 15px; color: var(--text); margin-bottom: 0; }
+.card-stack {
+  display: grid; gap: 12px;
+  margin-top: var(--block-gap);
+}
+.card {
+  background: var(--bg2); border: 1px solid var(--bg3);
+  border-radius: 8px; padding: var(--gap);
+}
+.card p { font-size: 15px; line-height: 1.6; margin-bottom: 0; }
+.frame {
+  background: var(--bg2); border: 1px dashed var(--bg3);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text3); font-size: 13px;
+  margin-top: var(--block-gap);
+}
+.frame.screenshot { aspect-ratio: 16 / 10; }
+.frame.video { aspect-ratio: 16 / 9; }
+.frame.pair {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--bg3); aspect-ratio: auto;
+}
+.frame.pair > div {
+  background: var(--bg2);
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px var(--gap); font-size: 13px; color: var(--text3);
+}
+.solution {
+  margin-top: var(--block-gap);
+  padding-top: var(--block-gap);
+  border-top: 1px solid var(--bg3);
+}
+.solution:first-of-type {
+  margin-top: var(--text-gap);
+  padding-top: 0;
+  border-top: none;
+}
+.solution p { font-size: 15px; line-height: 1.6; }
+.outcome-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: var(--block-gap);
+}
+.outcome-card {
+  background: var(--bg2); border: 1px solid var(--bg3);
+  border-radius: 8px; padding: var(--gap);
+}
+.outcome-card .num {
+  font-family: var(--serif); font-size: 32px; font-weight: 400;
+  line-height: 1; margin-bottom: 8px;
+}
+.outcome-card .desc {
+  font-size: 14px; color: var(--text2); line-height: 1.5; margin-bottom: 0;
+}
+.tl-bar {
+  display: flex; gap: 2px; border-radius: 6px; overflow: hidden;
+  margin-top: var(--block-gap);
+}
+.tl-seg {
+  flex: 1; background: var(--bg2); padding: 14px 10px;
+  transition: background 0.2s;
+}
+.tl-seg:hover { background: var(--bg3); }
+.tl-seg .tl-date { font-size: 11px; color: var(--accent); margin-bottom: 4px; }
+.tl-seg .tl-label { font-size: 11px; color: var(--text2); line-height: 1.4; margin-bottom: 0; }
+
+@media (max-width: 640px) {
+  :root { --section-gap: 60px; --block-gap: 32px; }
+  .grid-2, .outcome-grid { grid-template-columns: 1fr; }
+  .frame.pair { grid-template-columns: 1fr; }
+  .tl-bar { flex-direction: column; }
+  .hero { padding-top: 60px; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="col">
+    <div class="eyebrow">Case Study — ExoWork, 2026</div>
+    <h1>Taming the Vibe</h1>
+    <p class="lead">
+      While AI-generated code lets you ship faster and get a product in the hands of customers quickly, it also compounds UX debt in ways that only show up when real people try to use the thing.
+    </p>
+    <img class="hero-img" src="artwork/Jean-François_de_Troy_-_Jason_Taming_the_Bulls_of_Aeëtes,_1742.jpg" alt="Jason Taming the Bulls of Aeëtes, Jean-François de Troy, 1742">
+    <div class="art-credit">Jason Taming the Bulls of Ae&euml;tes &mdash; Jean-Fran&ccedil;ois de Troy, 1742</div>
+  </div>
+</div>
+
+<section>
+  <div class="col">
+    <div class="eyebrow">Context</div>
+    <h2>The product and my role</h2>
+    <p>
+      ExoWork is a co-pilot for agentic workflows, built at Realfast. It's an Electron Mac app that gives Salesforce consultants and BAs a way to work with AI coding agents without ever touching a terminal. Think file explorer, conversation UI, permission management, onboarding wizards. The kind of product layer that makes the underlying AI actually usable for people who aren't developers.
+    </p>
+    <p>
+      We shipped the initial version fast using AI-generated code. It worked, it was functional, and it got into the hands of early users quickly. But as consultants started using it day to day, the UX gaps became hard to ignore. Navigation was confusing. Permissions deadlocked the screen. Error messages read like stack traces.
+    </p>
+    <p>
+      I came in as design lead and had to onboard myself on the same AI tech stack that the engineers were using. There was no Figma handoff here. I was working directly on the live codebase, using Claude Code as my implementation partner, shipping design improvements straight to production. Over three months I put out 90 PRs across four repos.
+    </p>
+
+    <div class="grid-2">
+      <div><div class="label">Role</div><div class="value">Design Lead</div></div>
+      <div><div class="label">Duration</div><div class="value">3 months, Feb–Apr 2026</div></div>
+      <div><div class="label">Platform</div><div class="value">Electron Mac app (React)</div></div>
+      <div><div class="label">Users</div><div class="value">Salesforce consultants and BAs</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="eyebrow">Problems</div>
+    <h2>What users ran into</h2>
+    <p>
+      Vibe-coded software has a specific failure mode. The code works, the features are all there, but there's no design thinking underneath. No information architecture, no awareness of who the user is, no consistency. The same kinds of problems showed up everywhere in ExoWork once real consultants started using it.
+    </p>
+
+    <div class="card-stack">
+      <div class="card">
+        <h3>"I don't know where I am"</h3>
+        <p>The sidebar mixed navigation with view-switching. Breadcrumbs skipped hierarchy levels. The Help page took over the entire navigation state and left users trapped with no back button. Every screen felt like a dead end.</p>
+      </div>
+      <div class="card">
+        <h3>"I don't understand what it's asking me"</h3>
+        <p>Permission prompts showed labels like "Bash requires approval." The dismiss button silently denied permissions, permanently, with no way to undo it. Error messages showed raw codes like SDK_STREAM_ERROR. Onboarding tours talked about "tool calls" and "the agent."</p>
+      </div>
+      <div class="card">
+        <h3>"This doesn't work on my computer"</h3>
+        <p>Keyboard shortcuts broke on Windows because the AI had assumed macOS key values. Hotkey labels showed Mac symbols on PCs. Light mode had 2.5:1 contrast on action buttons, which is basically invisible.</p>
+      </div>
+    </div>
+
+    <div class="frame screenshot">
+      <span>Screenshot: permission deadlock state, screen unresponsive, no exit path</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="eyebrow">Approach</div>
+    <h2>How I worked</h2>
+    <p>
+      The first couple of weeks were reactive. Users hit a problem, I fixed it. But by week three I noticed I was fixing the same categories of issues over and over. Permission UX, navigation confusion, developer-facing copy. Individual fixes weren't going to cut it.
+    </p>
+    <p>
+      So I shifted to treating these as design surfaces, not bug queues. I'd pick an area like "all user-facing copy" or "the entire permission flow" and sweep through it end to end. I wrote jargon-guard tests, 139 of them, that scan every string in the app for banned developer terms. If anyone introduces a tooltip that says "CLI" or "tool call," the build breaks.
+    </p>
+    <p>
+      The interesting part is that I was using the same AI tools that created these problems to fix them. Claude Code was my implementation partner throughout. The difference wasn't the tool. It was showing up with a clear design intent before starting a conversation with the AI. When I knew exactly what I wanted, the AI was great at getting me there fast.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="eyebrow">Solutions</div>
+    <h2>What I designed</h2>
+
+    <div class="solution">
+      <h3>Navigation</h3>
+      <p>
+        This one took three tries. The first pass removed breadcrumbs and added a persistent sidebar, which helped but still mixed "go to a place" with "change how you see this place." The second approach got opened as a PR, debated, and scrapped. Wrong model. The third attempt finally clicked: a collapsible left nav with three clear tabs (Workplan, Chats, Files), Help moved to a modal overlay, and a consistent back button on every screen.
+      </p>
+      <div class="frame pair">
+        <div>Before: mixed sidebar with no hierarchy</div>
+        <div>After: three-tab collapsible left nav</div>
+      </div>
+    </div>
+
+    <div class="solution">
+      <h3>Permission system</h3>
+      <p>
+        This was the surface I touched the most. 13 iterations over the full three months. The original was a full-width banner with developer jargon that could deadlock the entire screen if the backing API call failed. I redesigned it as a floating pill with three risk tiers (low, medium, high), plain-language labels, a dismiss that's purely visual with a restore option, and smart defaults that remember your preferences per project. Every round was shaped by watching real consultants interact with the prompts.
+      </p>
+      <div class="frame video">
+        <span>Video: permission bar in action, risk tiers, dismiss and restore</span>
+      </div>
+    </div>
+
+    <div class="solution">
+      <h3>Copy and language</h3>
+      <p>
+        The AI had piped raw error codes straight to the screen. I replaced that with a central error map that translates machine errors into plain recovery instructions. I also built the jargon-guard test suite that catches developer language anywhere in the UI. "Checklist" became "Workplan." "Open Terminal" became "New Terminal." Every empty state got an actual call to action instead of a blank screen.
+      </p>
+      <div class="frame pair">
+        <div>Before: "SDK_STREAM_ERROR"</div>
+        <div>After: "Something went wrong. Try again."</div>
+      </div>
+    </div>
+
+    <div class="solution">
+      <h3>Platform compatibility</h3>
+      <p>
+        It took three separate passes just on keyboard shortcuts. First terminal hotkeys, then bracket and backtick keycodes that Chrome on Windows reports differently, then Chrome-reserved shortcut conflicts. Fixing these one by one was slow. The real unlock was stepping back and treating platform compatibility as a design category to audit end to end, not a bug list to work through.
+      </p>
+      <div class="frame pair">
+        <div>Before: Mac-only labels on Windows</div>
+        <div>After: platform-aware labels and keybindings</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="eyebrow">Outcome</div>
+    <h2>What changed</h2>
+
+    <div class="outcome-grid">
+      <div class="outcome-card">
+        <div class="num">83</div>
+        <div class="desc">PRs merged across 4 repos in 3 months</div>
+      </div>
+      <div class="outcome-card">
+        <div class="num">139</div>
+        <div class="desc">Automated jargon-guard checks protecting every user-facing string</div>
+      </div>
+      <div class="outcome-card">
+        <div class="num">3</div>
+        <div class="desc">Full navigation redesigns before landing on a stable model</div>
+      </div>
+      <div class="outcome-card">
+        <div class="num">13</div>
+        <div class="desc">Rounds on the permission surface, each shaped by real user sessions</div>
+      </div>
+    </div>
+
+    <div class="tl-bar">
+      <div class="tl-seg">
+        <div class="tl-date">Feb 4</div>
+        <div class="tl-label">Foundation</div>
+      </div>
+      <div class="tl-seg">
+        <div class="tl-date">Feb 18</div>
+        <div class="tl-label">Core UX</div>
+      </div>
+      <div class="tl-seg">
+        <div class="tl-date">Feb 23</div>
+        <div class="tl-label">First users</div>
+      </div>
+      <div class="tl-seg">
+        <div class="tl-date">Mar 2</div>
+        <div class="tl-label">Audits</div>
+      </div>
+      <div class="tl-seg">
+        <div class="tl-date">Mar 9</div>
+        <div class="tl-label">Nav redesign</div>
+      </div>
+      <div class="tl-seg">
+        <div class="tl-date">Mar 17</div>
+        <div class="tl-label">Convergence</div>
+      </div>
+      <div class="tl-seg">
+        <div class="tl-date">Mar 24</div>
+        <div class="tl-label">Final arch</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="eyebrow">Reflection</div>
+    <h2>What I learned</h2>
+    <p>
+      <strong>Vibe-coded UX breaks in predictable ways.</strong> No information architecture, no sense of who the user is, platform assumptions baked in from training data. Once you see the pattern, you can audit for it systematically instead of waiting for bug reports.
+    </p>
+    <p>
+      <strong>Fixing things after the fact doesn't scale.</strong> I touched the permission bar 13 times. Each round taught me something, but it also made clear that design rules need to live where the AI works, not in a separate tool. That insight became the basis for <a href="case-study-exodesigner.html">ExoDesigner</a>, the design system I built next.
+    </p>
+    <p>
+      <strong>AI is a great collaborator when you bring the intent.</strong> I used the same tools the engineers use. What made the difference was knowing what I wanted before I opened a conversation with the AI. Clear design intent in, good implementation out.
+    </p>
+  </div>
+</section>
+
+</body>
+</html>

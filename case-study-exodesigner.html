@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ExoDesigner — A Design Reviewer on Every Branch</title>
+<meta name="description" content="A design system that lives inside the AI, enforcing standards at generation time instead of review time.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0a09;
+  --bg2: #1c1917;
+  --bg3: #292524;
+  --text: #e7e5e4;
+  --text2: #a8a29e;
+  --text3: #78716c;
+  --accent: #f59e0b;
+  --red: #ef4444;
+  --green: #22c55e;
+  --serif: 'Libre Baskerville', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --col: 720px;
+  --gap: 24px;
+  --section-gap: 80px;
+  --block-gap: 40px;
+  --text-gap: 20px;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: var(--sans); font-size: 17px; line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--accent); color: var(--bg); }
+img { max-width: 100%; display: block; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.col {
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 0 var(--gap);
+}
+section { padding: var(--section-gap) 0; }
+section + section { border-top: 1px solid var(--bg3); }
+.eyebrow {
+  font-size: 12px; color: var(--accent);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+h1 {
+  font-family: var(--serif); font-size: clamp(36px, 6vw, 64px);
+  line-height: 1.1; font-weight: 400;
+  margin-bottom: var(--text-gap);
+}
+h2 {
+  font-family: var(--serif); font-size: clamp(24px, 3.5vw, 36px);
+  line-height: 1.2; font-weight: 400;
+  margin-bottom: var(--text-gap);
+}
+h3 {
+  font-family: var(--serif); font-size: 20px; font-weight: 400;
+  margin-bottom: 10px;
+}
+p { color: var(--text2); margin-bottom: var(--text-gap); }
+p:last-child { margin-bottom: 0; }
+p strong { color: var(--text); font-weight: 600; }
+code {
+  font-size: 15px;
+  background: var(--bg2); padding: 2px 6px; border-radius: 3px;
+}
+.lead { font-size: 19px; line-height: 1.6; color: var(--text2); }
+.hero { padding: 100px 0 var(--block-gap); }
+.hero-img {
+  width: 100%; height: auto;
+  border-radius: 6px;
+  margin-top: var(--block-gap);
+}
+.art-credit {
+  font-size: 11px; color: var(--text3); margin-top: 10px; opacity: 0.6;
+}
+.grid-2 {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--bg3); border: 1px solid var(--bg3);
+  border-radius: 8px; overflow: hidden;
+  margin-top: var(--block-gap);
+}
+.grid-2 > div { background: var(--bg2); padding: var(--gap); }
+.grid-2 .label {
+  font-size: 11px; color: var(--text3); text-transform: uppercase;
+  letter-spacing: 0.06em; margin-bottom: 4px;
+}
+.grid-2 .value { font-size: 15px; color: var(--text); margin-bottom: 0; }
+.card-stack { display: grid; gap: 12px; margin-top: var(--block-gap); }
+.card {
+  background: var(--bg2); border: 1px solid var(--bg3);
+  border-radius: 8px; padding: var(--gap);
+}
+.card p { font-size: 15px; line-height: 1.6; margin-bottom: 0; }
+.cmd-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin-top: var(--block-gap);
+}
+.cmd-card {
+  background: var(--bg2); border: 1px solid var(--bg3);
+  border-radius: 8px; padding: var(--gap);
+}
+.cmd-card .cmd {
+  font-size: 14px; color: var(--accent);
+  margin-bottom: 8px; display: block;
+}
+.cmd-card h3 { font-size: 16px; margin-bottom: 6px; }
+.cmd-card p { font-size: 14px; color: var(--text3); line-height: 1.5; margin-bottom: 0; }
+.arch {
+  background: var(--bg2); border: 1px solid var(--bg3);
+  border-radius: 8px; padding: var(--gap);
+  margin-top: var(--block-gap);
+}
+.arch-layer {
+  display: flex; align-items: baseline; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--bg3);
+}
+.arch-layer:last-child { border-bottom: none; }
+.arch-label {
+  min-width: 90px; font-size: 11px; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.06em; flex-shrink: 0;
+}
+.arch-items { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip {
+  background: var(--bg3); padding: 3px 10px; border-radius: 4px;
+  font-size: 12px; color: var(--text2);
+}
+.chip.hi { border: 1px solid var(--accent); color: var(--accent); background: transparent; }
+.ba-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  margin-top: var(--block-gap);
+}
+.ba-col h4 {
+  font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.08em; margin-bottom: 10px;
+}
+.ba-col.before h4 { color: var(--red); }
+.ba-col.after h4 { color: var(--green); }
+.ba-col ul { list-style: none; }
+.ba-col li {
+  padding: 5px 0; color: var(--text3); font-size: 14px;
+  border-bottom: 1px solid var(--bg3);
+}
+.ba-col li:last-child { border-bottom: none; }
+.outcome-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px; margin-top: var(--block-gap);
+}
+.outcome-card {
+  background: var(--bg2); border: 1px solid var(--bg3);
+  border-radius: 8px; padding: var(--gap);
+}
+.outcome-card .num {
+  font-family: var(--serif); font-size: 28px; font-weight: 400;
+  line-height: 1; margin-bottom: 6px;
+}
+.outcome-card .desc {
+  font-size: 13px; color: var(--text2); line-height: 1.4; margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  :root { --section-gap: 60px; --block-gap: 32px; }
+  .grid-2, .cmd-grid, .ba-grid, .outcome-grid { grid-template-columns: 1fr; }
+  .hero { padding-top: 60px; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="col">
+    <div class="eyebrow">Case Study — ExoDesigner, 2026</div>
+    <h1>ExoDesigner — A design reviewer on every branch</h1>
+    <p class="lead">
+      After three months of fixing vibe-coded UX by hand, I built a design system that lives inside the AI itself. It enforces standards at generation time, not review time.
+    </p>
+    <img class="hero-img" src="artwork/hero.avif" alt="Gutenberg inspecting a proof from his printing press">
+    <div class="art-credit">Gutenberg Inspecting a Proof — after a painting attributed to Jean-Antoine Laurent, 19th century</div>
+  </div>
+</div>
+
+<section>
+  <div class="col">
+    <div class="eyebrow">Context</div>
+    <h2>Why I built this</h2>
+    <p>
+      During my work on <a href="case-study-exowork.html">ExoWork</a> at Realfast, I shipped 90 PRs fixing UX problems that AI-generated code had created. I touched the permission bar 13 times. Redesigned the navigation 3 times. Rewrote the same categories of copy over and over. The fixes worked, but the process didn't scale.
+    </p>
+    <p>
+      The core issue was that traditional design systems don't reach the AI. A Figma library or a style guide doc assumes a human reads it and applies the rules during implementation. But when Claude Code is generating the components, nobody reads the style guide. The AI just produces functional code with hardcoded hex values, inconsistent spacing, and developer-facing copy.
+    </p>
+    <p>
+      I needed a design system that lives where the AI already works: in the codebase, in the terminal, at the moment the code is being written.
+    </p>
+
+    <div class="grid-2">
+      <div><div class="label">Role</div><div class="value">Design Lead, sole builder</div></div>
+      <div><div class="label">Company</div><div class="value">Realfast</div></div>
+      <div><div class="label">Stack</div><div class="value">TypeScript, Claude Code slash commands</div></div>
+      <div><div class="label">Frameworks</div><div class="value">React, Salesforce LWC, Rails</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="eyebrow">Problem</div>
+    <h2>Why design systems fail with AI</h2>
+    <p>
+      After spending three months on ExoWork, I had a pretty clear picture of how vibe-coded UX breaks. It's not random. The AI makes the same category of mistake repeatedly, and you end up fixing the same things over and over.
+    </p>
+
+    <div class="card-stack">
+      <div class="card">
+        <h3>Review-time gates don't scale</h3>
+        <p>When AI can produce a full feature in minutes, post-hoc design review becomes a bottleneck. Teams route around it. The system needs to constrain at generation time, not catch problems after the fact.</p>
+      </div>
+      <div class="card">
+        <h3>Figma doesn't reach the AI</h3>
+        <p>A design system in a separate tool is invisible to the code generator. If it's not in the terminal, in the codebase, or in the prompt, it doesn't exist as far as the AI is concerned.</p>
+      </div>
+      <div class="card">
+        <h3>Violations are systematic</h3>
+        <p>Hardcoded color values, missing design tokens, developer-facing copy, platform assumptions. The AI doesn't make random errors. It makes the same kinds of errors, which means you can write rules to catch them.</p>
+      </div>
+      <div class="card">
+        <h3>Every fix is a design rule waiting to be formalised</h3>
+        <p>Each of the 90 PRs I shipped on ExoWork encoded some piece of design knowledge. The fix history is basically the specification for the design system, if you take the time to extract it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="eyebrow">Solution</div>
+    <h2>A design system that runs as code</h2>
+    <p>
+      ExoDesigner is a set of Claude Code slash commands that scan, enforce, and generate design-compliant code. When you (or the AI) type <code>/design-audit</code>, the system scans the codebase across six categories: visual hierarchy, interaction patterns, component consistency, form design, polish, and responsive behavior. It returns a report with specific file paths and suggested fixes.
+    </p>
+    <p>
+      <code>/design-fix</code> auto-corrects what it can. It replaces hardcoded hex values with design tokens, fixes spacing inconsistencies, and adds missing accessibility attributes. <code>/design-init</code> detects the project framework (React, Salesforce LWC, or Rails) and generates the right theme config and CSS variables.
+    </p>
+    <p>
+      The key architectural decision was to have the design system write rules into CLAUDE.md, the file that Claude Code reads before every response. This means the AI follows design constraints not because someone told it to, but because the constraints are part of its context. The design system becomes the AI's design instinct.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="eyebrow">Architecture</div>
+    <h2>How it works</h2>
+    <p>
+      The system is TypeScript, modular, and test-covered. Analyzers scan the codebase and produce structured violation reports. Fixers auto-correct what's deterministic. Generators produce project-specific configuration: CSS variables, CLAUDE.md design rules, and compliance reports. Framework detection is automatic, so the same commands adapt their output for React with Tailwind versus Salesforce LWC with SLDS.
+    </p>
+
+    <div class="arch">
+      <div class="arch-layer">
+        <span class="arch-label">Commands</span>
+        <div class="arch-items">
+          <span class="chip hi">/design-init</span>
+          <span class="chip hi">/design-audit</span>
+          <span class="chip hi">/design-fix</span>
+          <span class="chip hi">/design-check</span>
+          <span class="chip">/design-theme</span>
+          <span class="chip">/design-report</span>
+          <span class="chip">/design-generate</span>
+          <span class="chip">/design-redesign</span>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <span class="arch-label">Analyzers</span>
+        <div class="arch-items">
+          <span class="chip">Project Detect</span>
+          <span class="chip">Accessibility</span>
+          <span class="chip">Theme Scan</span>
+          <span class="chip">Component Scan</span>
+          <span class="chip">Quality Scan</span>
+          <span class="chip">Pattern Detect</span>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <span class="arch-label">Fixers</span>
+        <div class="arch-items">
+          <span class="chip">Color</span>
+          <span class="chip">Spacing</span>
+          <span class="chip">Accessibility</span>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <span class="arch-label">Generators</span>
+        <div class="arch-items">
+          <span class="chip">Theme CSS</span>
+          <span class="chip">CLAUDE.md Rules</span>
+          <span class="chip">Audit Report</span>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <span class="arch-label">Frameworks</span>
+        <div class="arch-items">
+          <span class="chip">React + Tailwind</span>
+          <span class="chip">Salesforce LWC</span>
+          <span class="chip">Rails + Tailwind</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="eyebrow">Toolkit</div>
+    <h2>Eight commands</h2>
+
+    <div class="cmd-grid">
+      <div class="cmd-card">
+        <span class="cmd">/design-init</span>
+        <h3>Framework detection</h3>
+        <p>Detects React, LWC, or Rails. Generates theme config, CSS variables, and CLAUDE.md rules.</p>
+      </div>
+      <div class="cmd-card">
+        <span class="cmd">/design-audit</span>
+        <h3>Six-category audit</h3>
+        <p>Visual hierarchy, interactions, components, forms, polish, responsive. Returns file paths and fixes.</p>
+      </div>
+      <div class="cmd-card">
+        <span class="cmd">/design-fix</span>
+        <h3>Auto-correction</h3>
+        <p>Replaces hardcoded colors with tokens, fixes spacing, adds accessibility attributes.</p>
+      </div>
+      <div class="cmd-card">
+        <span class="cmd">/design-check</span>
+        <h3>Quick compliance</h3>
+        <p>Fast pass/fail before commit. Catches regressions in spacing, color, and accessibility.</p>
+      </div>
+      <div class="cmd-card">
+        <span class="cmd">/design-theme</span>
+        <h3>Theme generation</h3>
+        <p>Brand palette with semantic roles. Primary, secondary, accent with automatic dark/light variants.</p>
+      </div>
+      <div class="cmd-card">
+        <span class="cmd">/design-report</span>
+        <h3>Compliance report</h3>
+        <p>Full audit output with severity levels, grouped by category. Exportable and trackable over time.</p>
+      </div>
+      <div class="cmd-card">
+        <span class="cmd">/design-generate</span>
+        <h3>Component generation</h3>
+        <p>New components that conform to the system from the start. No post-hoc cleanup needed.</p>
+      </div>
+      <div class="cmd-card">
+        <span class="cmd">/design-redesign</span>
+        <h3>Guided redesign</h3>
+        <p>Take an existing screen and redesign it within the system's constraints.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="eyebrow">Impact</div>
+    <h2>What changes</h2>
+    <p>
+      The shift is from catching design problems after the code is written to preventing them while the code is being generated. It's the difference between a review gate and a generation constraint.
+    </p>
+
+    <div class="ba-grid">
+      <div class="ba-col before">
+        <h4>Without ExoDesigner</h4>
+        <ul>
+          <li>AI generates components with hardcoded #362CFF</li>
+          <li>Spacing is a mix of 12px, 15px, 14px in one view</li>
+          <li>No ARIA labels on interactive elements</li>
+          <li>Light mode contrast at 2.5:1 on buttons</li>
+          <li>Error text: SDK_STREAM_ERROR</li>
+          <li>Design review catches issues after the PR</li>
+          <li>Same fix applied 13 times over 3 months</li>
+        </ul>
+      </div>
+      <div class="ba-col after">
+        <h4>With ExoDesigner</h4>
+        <ul>
+          <li>AI uses var(--color-primary) from CLAUDE.md</li>
+          <li>4px spacing grid enforced by design-check</li>
+          <li>Accessibility fixer adds ARIA attributes automatically</li>
+          <li>Contrast validated against WCAG AA at scan time</li>
+          <li>Copy rules in CLAUDE.md prevent jargon</li>
+          <li>Violations caught before the code exists</li>
+          <li>Fix encoded once, enforced forever</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="outcome-grid">
+      <div class="outcome-card"><div class="num">8</div><div class="desc">Slash commands</div></div>
+      <div class="outcome-card"><div class="num">7</div><div class="desc">Analyzer modules</div></div>
+      <div class="outcome-card"><div class="num">3</div><div class="desc">Auto-fixers</div></div>
+      <div class="outcome-card"><div class="num">6</div><div class="desc">Audit categories</div></div>
+      <div class="outcome-card"><div class="num">3</div><div class="desc">Framework targets</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="eyebrow">Reflection</div>
+    <h2>What I learned</h2>
+    <p>
+      <strong>The design system has to live where the AI works.</strong> A Figma file is for the designer. CLAUDE.md is for the machine. Both are necessary, but only one of them scales when the AI is writing the code.
+    </p>
+    <p>
+      <strong>One person can't audit every AI-generated component forever.</strong> The 90 PRs I shipped on ExoWork were necessary, but that approach doesn't hold up over time. A system that runs every time, doesn't get tired, and doesn't skip the check because the deadline is tomorrow, that's what actually works.
+    </p>
+    <p>
+      <strong>Fix history is the spec.</strong> Every PR I shipped during ExoWork was a design rule waiting to be formalised. ExoDesigner didn't come from a design exercise. It came from three months of seeing the same problems and writing down how to prevent them.
+    </p>
+  </div>
+</section>
+
+</body>
+</html>
