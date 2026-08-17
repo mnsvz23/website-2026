@@ -1,0 +1,245 @@
+/* ============================================================
+   Manas Vaze, site system
+   Two colours. One typeface, two weights. System mono for data.
+   ============================================================ */
+
+/* Open Sauce One, 400 and 500 only. No other weights, no second family. */
+@font-face{
+  font-family:'Open Sauce One';font-style:normal;font-weight:400;font-display:block;
+  src:url(https://cdn.jsdelivr.net/fontsource/fonts/open-sauce-one@latest/latin-400-normal.woff2) format('woff2');
+}
+@font-face{
+  font-family:'Open Sauce One';font-style:normal;font-weight:500;font-display:block;
+  src:url(https://cdn.jsdelivr.net/fontsource/fonts/open-sauce-one@latest/latin-500-normal.woff2) format('woff2');
+}
+
+/* Palette: Crowd, colourlovers.com
+   Light: navy on a cyan-tinted ground, with an ambient wash at the top of every page.
+     #EDF7F9  mist      → the ground (4DE4F1/A7E1E5 taken right down, so type can sit on it)
+     #274058  navy      → all primary type
+     #5A7183  slate     → secondary type, labels, hairlines
+     #0E7A88  deep teal → markers, rules, focus (the cyan taken dark enough to register)
+     #4DE4F1  cyan      → the top-of-page wash, at low alpha
+     #A7E1E5  haze      → the second stop of that wash
+   The palette's two greens (#A8FB77, #7DF094) are lighter than the ground itself,
+   so they cannot mark anything here and are deliberately unused. */
+:root{
+  --paper:#EDF7F9;
+  --ink:#274058;
+  --ink-2:#5A7183;
+  --leaf:#0E7A88;
+  --lichen:#4DE4F1;
+  --wash-1:rgba(77,228,241,.30);
+  --wash-2:rgba(167,225,229,.20);
+  --surface:#DDEFF3;
+  --surface-2:#CBE6EC;
+  --hair:rgba(39,64,88,.24);
+  --hair-soft:rgba(39,64,88,.14);
+  --wash:rgba(39,64,88,.06);
+  --sans:'Open Sauce One',-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;
+  --mono:ui-monospace,Menlo,Consolas,'DejaVu Sans Mono',monospace;
+  --rail:150px;
+  --gap:clamp(16px,4vw,48px);
+  --indent:clamp(0px,14vw,210px);
+}
+/* the indent is a desktop gesture; phones need the width for text */
+@media (max-width:720px){
+  :root{--indent:0px}
+}
+/* the ambient wash, fixed so it never seams against the pinned chrome */
+body::before{
+  content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(178deg,var(--wash-1) 0%,var(--wash-2) 28%,transparent 64%);
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-weight:400;font-size:14px;line-height:1.65;letter-spacing:-.1px;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+img,svg{max-width:100%}
+::selection{background:var(--ink);color:var(--paper)}
+:focus-visible{outline:1.5px solid var(--leaf);outline-offset:3px}
+
+.pad{padding-left:clamp(20px,3.2vw,40px);padding-right:clamp(20px,3.2vw,40px)}
+
+/* ---------- chrome: pinned, 11px system mono ---------- */
+.chrome{
+  position:fixed;top:0;left:0;right:0;z-index:30;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding-top:16px;padding-bottom:16px;
+  background:none;
+  font-family:var(--mono);font-size:11px;letter-spacing:.02em;line-height:1;
+}
+/* The bar paints the page's own wash, at the page's own scale (100vh, pinned
+   to the top), so it lines up with the gradient behind it exactly and never
+   shows as a band. Opaque enough to hide content scrolling under, masked at the
+   base so there is no hard edge. */
+.chrome::after{
+  content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-color:var(--paper);
+  background-image:linear-gradient(178deg,var(--wash-1) 0%,var(--wash-2) 28%,transparent 64%);
+  background-size:100% 100vh;
+  background-repeat:no-repeat;
+  -webkit-mask-image:linear-gradient(180deg,#000 72%,transparent);
+  mask-image:linear-gradient(180deg,#000 72%,transparent);
+}
+.chrome a:hover{opacity:.6}
+@media (max-width:640px){
+  .chrome{gap:14px}
+}
+
+/* ---------- shared layout: label rail + content ---------- */
+.band{border-top:1px solid var(--hair);padding-top:22px;padding-bottom:clamp(70px,11vh,120px)}
+.rail{display:grid;grid-template-columns:minmax(0,var(--rail)) 1fr;gap:var(--gap);align-items:start}
+@media (max-width:720px){.rail{grid-template-columns:1fr;gap:14px}}
+.tag{display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--ink-2);padding-top:2px}
+.tag::before{content:'';width:16px;height:2px;background:var(--leaf)}
+.lede{font-size:14px;letter-spacing:-.1px;max-width:min(56ch,100%)}
+.lede a{border-bottom:1px solid var(--hair)}
+.lede a:hover{border-color:currentColor}
+
+/* ---------- logos, masked to the ink so the page stays two colours ---------- */
+.marks{display:flex;flex-wrap:wrap;align-items:center;gap:26px 34px;margin-top:26px}
+.logo{
+  display:inline-block;background:var(--ink);
+  -webkit-mask-image:var(--m);mask-image:var(--m);
+  -webkit-mask-size:contain;mask-size:contain;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-position:center;mask-position:center;
+  opacity:1;transition:opacity .2s ease}
+.logo:hover{opacity:.6}
+/* each logo carries its own height; their SVG boxes hold very different
+   amounts of padding, so matching box heights does not match optical size */
+.logo img{display:block;width:auto;height:var(--h,17px);opacity:0}
+
+/* ---------- rows ---------- */
+.rows{margin-top:26px}
+.row{
+  display:grid;grid-template-columns:1fr auto;gap:18px;align-items:baseline;
+  padding:15px 0;border-bottom:1px solid var(--hair-soft)}
+.row:first-child{border-top:1px solid var(--hair-soft)}
+.row .t{font-size:14px;letter-spacing:-.1px}
+.row .d{font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--ink-2);white-space:nowrap}
+a.row{margin:0 -14px;padding-left:14px;padding-right:14px;transition:background .18s ease}
+a.row:hover{background:var(--surface)}
+a.row:hover .d{color:var(--ink)}
+
+.rows .svc{display:grid;grid-template-columns:minmax(0,var(--rail)) 1fr;gap:var(--gap);
+  padding:18px 0;align-items:start;border:0;border-bottom:1px solid var(--hair-soft)}
+.rows .svc:first-child{border-top:1px solid var(--hair-soft)}
+.svc .n{font-size:14px;letter-spacing:-.1px}
+.svc .b{font-size:13px;letter-spacing:-.06px;color:var(--ink-2);max-width:min(52ch,100%)}
+/* .rows .svc outranks a bare .svc here, so the collapse must match it */
+@media (max-width:720px){.svc,.rows .svc{grid-template-columns:1fr;gap:4px}}
+
+/* ---------- closing block ---------- */
+.close{padding-top:26px;padding-bottom:96px;border-top:1px solid var(--hair)}
+.close .big{
+  display:inline-block;font-weight:500;font-size:min(56px,7.4vw);line-height:1;
+  letter-spacing:-.03em;text-transform:lowercase;margin-top:12px}
+.close .big:hover{opacity:.6}
+.cta{
+  display:inline-block;background:var(--ink);color:var(--paper);
+  border:1px solid var(--ink);padding:12px 21px;
+  font-size:13px;font-weight:500;letter-spacing:-.06px;
+  transition:background .18s ease,color .18s ease}
+/* full inversion; both states sit at 9.2:1, no mid-value green in the middle */
+.cta:hover{background:var(--paper);color:var(--ink)}
+/* real buttons, the .cta treatment, 44px minimum hit target */
+.close-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:40px}
+.close-links a{
+  display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 21px;
+  background:var(--ink);color:var(--paper);border:1px solid var(--ink);
+  font-size:13px;font-weight:500;letter-spacing:-.06px;
+  transition:background .18s ease,color .18s ease}
+/* full inversion, same as .cta; both states sit at 9.2:1 */
+.close-links a:hover{background:var(--paper);color:var(--ink)}
+
+/* ---------- long-form: case studies and posts ---------- */
+.article{padding-top:132px;padding-bottom:40px}
+.article-head{max-width:min(760px,calc(100% - var(--indent)));margin-left:var(--indent)}
+.article-meta{font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--ink-2);
+  display:flex;gap:18px;flex-wrap:wrap;margin-bottom:26px}
+.article h1{
+  font-weight:500;font-size:min(72px,8.2vw);line-height:.95;letter-spacing:-.035em;
+  text-transform:lowercase;max-width:min(15ch,100%)}
+.article .standfirst{
+  margin-top:26px;font-size:16px;line-height:1.6;letter-spacing:-.12px;
+  max-width:min(46ch,100%);color:var(--ink-2)}
+
+.prose{padding-bottom:120px}
+.prose-body{max-width:min(560px,100%)}
+.prose-body > * + *{margin-top:16px}
+.prose-body h2{
+  font-weight:500;font-size:20px;line-height:1.25;letter-spacing:-.02em;
+  margin-top:56px;padding-top:20px;border-top:1px solid var(--hair-soft)}
+.prose-body h3{font-weight:500;font-size:15px;letter-spacing:-.1px;margin-top:32px}
+.prose-body p{font-size:14px;line-height:1.75;letter-spacing:-.1px}
+.prose-body a{border-bottom:1px solid var(--hair)}
+.prose-body a:hover{border-color:currentColor}
+.prose-body ul,.prose-body ol{padding-left:18px}
+.prose-body li{font-size:14px;line-height:1.75;letter-spacing:-.1px}
+.prose-body li + li{margin-top:7px}
+.prose-body strong{font-weight:500}
+.prose-body em{font-style:normal;color:var(--ink-2)}
+.prose-body blockquote{
+  padding-left:18px;border-left:1px solid var(--hair);
+  font-size:15px;line-height:1.7;letter-spacing:-.12px;color:var(--ink-2)}
+.prose-body code{font-family:var(--mono);font-size:12px;background:var(--wash);padding:1px 5px}
+.prose-body pre{
+  font-family:var(--mono);font-size:12px;line-height:1.7;background:var(--wash);
+  padding:16px 18px;overflow-x:auto;letter-spacing:0}
+.prose-body pre code{background:none;padding:0}
+.prose-body hr{border:0;border-top:1px solid var(--hair);margin-top:44px}
+.prose-body figure{margin-top:32px}
+.prose-body figure img{display:block;width:100%;height:auto}
+.prose-body figcaption{
+  margin-top:9px;font-family:var(--mono);font-size:10px;letter-spacing:.02em;color:var(--ink-2)}
+
+/* wide figures break the measure; the one place content escapes the column */
+.prose-body .wide{max-width:min(900px,calc(100vw - 2 * clamp(20px,3.2vw,40px)))}
+
+/* next / previous */
+.after{border-top:1px solid var(--hair);padding-top:22px;padding-bottom:110px}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;
+    transition-duration:.01ms !important}
+}
+
+/* ---------- nav ---------- */
+.nav{display:flex;gap:18px;flex-wrap:wrap;justify-content:flex-end}
+.nav a{padding-bottom:2px}
+.nav a:hover{opacity:.6}
+.nav a[aria-current="page"]{box-shadow:inset 0 -2px 0 var(--leaf);opacity:1}
+@media (max-width:520px){.nav{gap:13px}}
+
+/* ---------- now ---------- */
+.stamp{margin-top:20px;font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--ink-2)}
+
+/* ---------- projects ---------- */
+.proj{
+  display:grid;grid-template-columns:minmax(0,var(--rail)) 1fr auto;gap:var(--gap);
+  padding:18px 0;border-bottom:1px solid var(--hair-soft);align-items:baseline}
+.proj:first-child{border-top:1px solid var(--hair-soft)}
+.proj .n{font-size:14px;letter-spacing:-.1px}
+.proj .b{font-size:13px;letter-spacing:-.06px;color:var(--ink-2);max-width:min(54ch,100%)}
+.proj .s{font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--ink-2);white-space:nowrap}
+a.proj:hover .n{opacity:.6}
+@media (max-width:720px){
+  .proj{grid-template-columns:1fr;gap:5px}
+  .proj .s{grid-row:1}
+}
+
+/* ---------- placeholder, so unfinished sections read as unfinished ---------- */
+.todo{
+  margin-top:20px;padding:16px 18px;background:var(--wash);
+  border-left:3px solid var(--leaf);
+  font-family:var(--mono);font-size:11px;line-height:1.8;letter-spacing:.02em;color:var(--ink-2);
+  max-width:min(64ch,100%)}

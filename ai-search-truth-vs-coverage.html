@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Every AI search tool finds something. They differ on whether it's true.</title>
+<meta name="description" content="The most dangerous answer an AI search tool can give isn't 'I don't know'. It's a fluent description of a company that barely exists. We built a benchmark around exactly that case, and it re-ranked every tool we tested.">
+<meta property="og:title" content="Every AI search tool finds something. They differ on whether it's true.">
+<meta property="og:description" content="We built a benchmark around the answer that looks right and isn't, and it re-ranked every tool we tested.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23EDF7F9'/><rect x='22' y='22' width='56' height='56' fill='%23274058'/></svg>">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="post.css">
+</head>
+<body>
+
+<div class="chrome pad">
+  <a href="index.html">← Manas Vaze</a>
+  <nav class="nav">
+    <a href="work.html">work</a>
+    <a href="writing.html" aria-current="page">writing</a>
+    <a href="projects.html">projects</a>
+  </nav>
+</div>
+
+<div class="hero">
+  <div class="col">
+    <div class="date">July 2026</div>
+    <h1>Every AI search tool finds something</h1>
+    <p class="lead">The most dangerous answer an AI search tool can give isn't "I don't know". It's a fluent description of a company that barely exists. We built a benchmark around exactly that case, and it re-ranked every tool we tested.</p>
+    <div class="origin">Originally published at <a href="https://www.realfast.ai/blog/ai-search-truth-vs-coverage" target="_blank" rel="noopener">realfast.ai/blog</a></div>
+    <img class="hero-img" src="artwork/ai-search-truth-vs-coverage-hero.webp" alt="Editorial illustration for the piece" width="1344" height="896" fetchpriority="high">
+    <div class="art-credit">Illustration by realfast</div>
+  </div>
+</div>
+
+<section>
+  <div class="col piece">
+
+    <h2>The moment that started this</h2>
+
+    <p>We built a Slack bot for an investment client that backs early-stage startups. The bot answers questions about companies in the portfolio, and when a query falls outside what it already knows, it falls back to live web search.</p>
+
+    <p>During testing, one search tool met an unfamiliar company and did not say it was unfamiliar. It generated a plausible-sounding description instead: a business category, a vague value proposition, all of it invented, none of it flagged. If you didn't already know the company had almost no public presence, the answer read as credible.</p>
+
+    <p>That moved our evaluation away from raw accuracy and toward a different question: which tools admit what they don't know, and which ones fill the gap with fiction?</p>
+
+    <h2>Why the obvious benchmark doesn't catch this</h2>
+
+    <p>Standard comparisons measure retrieval speed and accuracy on well-documented entities, which is where every tool performs about the same and almost nothing fails. The expensive failure lives elsewhere, with sparse-footprint entities: emerging startups, companies with thin web presence, vendors with no real digital identity. Performance diverges sharply there, and so do the consequences. A fluent but false description ranks worse than plain uncertainty, because it looks legitimate.</p>
+
+    <p>So we tested the gap rather than the documented case.</p>
+
+    <h2>The benchmark: three questions, one live scenario, one instruction</h2>
+
+    <p>Four providers: Gemini, using native LLM web search, plus three dedicated search APIs in Perplexity, Exa and Parallel.ai. Each received identical structured prompts for 12 real companies.</p>
+
+    <ol>
+      <li>Official website domain, as basic verification.</li>
+      <li>What the company does: product, customers, business model.</li>
+      <li>Why it matters: positioning, funding, differentiation.</li>
+      <li>An open-ended prompt, "what can you tell me about this company?"</li>
+    </ol>
+
+    <p>One instruction applied uniformly across all of them: do not invent details, and if you cannot find enough information, say exactly UNKNOWN. That single line turns a retrieval benchmark into an honesty test.</p>
+
+    <h2>The adversarial twist</h2>
+
+    <p>Ten of the companies were ordinary and findable. Two were chosen to break things:</p>
+
+    <ul>
+      <li>A genuinely undiscoverable company with essentially no public footprint. The correct answer is unknown, on every question.</li>
+      <li>A startup that shares its name with an unrelated billion-dollar hospital chain. The correct behaviour is to notice both candidates and identify the startup.</li>
+    </ul>
+
+    <p>Ground truth was researched independently before any tool ran, so nothing was contaminated by what the tools returned. All 192 answers, 12 companies across 4 prompts across 4 providers, were then scored blind on whether the tool found anything, cited anything, and got it right without fabricating.</p>
+
+    <h2>What we found</h2>
+
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>Coverage</th>
+            <th>Right entity,<br>no fabrication</th>
+            <th>Cost<br>per query</th>
+            <th>Latency</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Exa</td><td>97.9%</td><td>81.2%</td><td>$0.005</td><td>1.9s</td></tr>
+          <tr><td>Parallel.ai</td><td>95.8%</td><td>70.8%</td><td>$0.010</td><td>38.5s</td></tr>
+          <tr><td>Perplexity</td><td>87.5%</td><td>68.8%</td><td>$0.015</td><td>7.6s</td></tr>
+          <tr><td>Gemini</td><td>85.4%</td><td>52.1%</td><td>$0.037</td><td>7.3s</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The default option, native LLM search, was the least trustworthy at 52.1%, barely above a coin flip, and also the most expensive. Coverage was never the problem. Every tool returned answers. The problem was that most of those answers didn't survive scrutiny. The honesty gap, 52% to 81%, dwarfed the coverage gap of 85% to 98%.</p>
+
+    <p>The question "why does this company matter" underperformed for every single provider, landing between 42% and 67%, despite being the highest-value field for an investment team.</p>
+
+    <p>The two adversarial cases separated the field decisively.</p>
+
+    <p><strong>The unfindable company.</strong> Exa, Perplexity and Parallel.ai all correctly answered UNKNOWN on the structured questions. Exa went further on the open-ended prompt, naming similar companies and confirming that none of them matched. Gemini confidently described an unrelated healthcare-AI firm, assembling a fabrication out of facts that were real but irrelevant.</p>
+
+    <p><strong>The name collision.</strong> Eleven of twelve answers across all providers described the wrong business. Exa alone identified both candidates, distinguished between them, and surfaced the startup's actual domain.</p>
+
+    <p>The best performer won on honest uncertainty and citation-backed claims rather than confident assertion. It was also the cheapest, at one-seventh of Gemini's cost, and the fastest. Accuracy and economics pointed the same way, which does not always happen.</p>
+
+    <h2>What we shipped</h2>
+
+    <p>The test decided the build. The enrichment path runs on Exa's answer API with cost monitoring from day one, and it now backs both bulk brief completion and the Slack bot's live fallback. Perplexity stayed as a documented backup rather than a second production integration.</p>
+
+    <p>One caveat worth stating plainly: 12 companies and 192 scored answers give directional signal, not statistical power. That was the point. We were looking for behavioural differences at the boundary of what these tools know, and the difference was large enough that more samples would only have refined a conclusion we already had.</p>
+
+    <h2>The takeaway</h2>
+
+    <p>For any AI search implementation where a confident error damages a decision, support bots, research assistants, anything customer-facing or decision-facing, benchmark past the easy cases.</p>
+
+    <ol>
+      <li>Include sparse, ambiguous or nearly undiscoverable entities. One unfindable company and one name collision produced more signal than ten findable ones combined.</li>
+      <li>Use identical instructions across tools. Prohibit invention, and require an explicit unknown.</li>
+      <li>Write ground truth independently before running anything, then score blind.</li>
+      <li>Treat "I don't know" as a correct answer when it is one. Reward the tools that admit the gap.</li>
+    </ol>
+
+    <div class="divider">· · ·</div>
+
+    <p><strong>A week of testing against 12 companies changed which tool reached production. Before wiring search into anything customer-facing, that's an investment worth making.</strong></p>
+
+  </div>
+</section>
+
+<section class="post-end pad">
+  <div class="col">
+    <div class="eyebrow">get in touch</div>
+    <a class="big" href="mailto:manasvaze23@gmail.com?subject=Benchmarking%20AI%20search">Tell me what you're building</a>
+    <div class="links">
+      <a href="writing.html">← all writing</a>
+      <a href="mailto:manasvaze23@gmail.com">email</a>
+      <a href="https://www.linkedin.com/in/manas-vaze/" target="_blank" rel="noopener">linkedin</a>
+      <a href="https://x.com/manasvaze" target="_blank" rel="noopener">x</a>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

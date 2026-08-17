@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects · Manas Vaze</title>
+<meta name="description" content="SoundBooth, children's books, Roomix and a pile of small experiments.">
+<meta property="og:title" content="Projects · Manas Vaze">
+<meta property="og:description" content="SoundBooth, children's books, Roomix and a pile of small experiments.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23EDF7F9'/><rect x='22' y='22' width='56' height='56' fill='%23274058'/></svg>">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="post.css">
+<style>
+  /* linked rows show it on the headline: hairline underline plus an arrow */
+  a.proj .n{
+    width:fit-content;border-bottom:1px solid var(--hair);
+    transition:border-color .18s ease}
+  a.proj:hover .n{border-color:currentColor}
+  a.proj .n::after{
+    content:'\2197';margin-left:4px;font-size:10px;
+    color:var(--ink-2);font-weight:400}
+
+  /* landscape thumbnails under the children's books row; each opens a PDF */
+  .book-shelf{grid-column:2;display:flex;flex-wrap:wrap;gap:14px;margin-top:8px}
+  .book{width:176px;border-bottom:0}
+  .book img{
+    display:block;width:100%;aspect-ratio:4/3;object-fit:cover;
+    border:1px solid var(--hair);
+    transition:transform .25s cubic-bezier(.2,.7,.2,1),border-color .18s ease}
+  .book span{
+    display:block;margin-top:7px;
+    font-family:var(--mono);font-size:10px;letter-spacing:.02em;color:var(--ink-2)}
+  .book:hover img{transform:translateY(-3px);border-color:var(--ink)}
+  .book:hover span{color:var(--ink)}
+  @media (max-width:720px){
+    .book-shelf{grid-column:1}
+    .book{width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){.book:hover img{transform:none}}
+</style>
+</head>
+<body>
+
+<div class="chrome pad">
+  <a href="index.html">← Manas Vaze</a>
+  <nav class="nav">
+    <a href="work.html">work</a>
+    <a href="writing.html">writing</a>
+    <a href="projects.html" aria-current="page">projects</a>
+  </nav>
+</div>
+
+<div class="hero pad">
+  <div class="col">
+    <div class="eyebrow">Projects</div>
+    <h1>Learning and fun</h1>
+    <p class="lead">Where I go when nobody's asking me to design anything. Books, TV screens, half-finished experiments, all built for the joy of it.</p>
+  </div>
+</div>
+
+<section class="pad">
+  <div class="col">
+    <div class="rows">
+      <a class="proj" href="https://github.com/mnsvz23/SoundBooth" target="_blank" rel="noopener">
+        <span class="n">SoundBooth</span>
+        <span class="b">Apps make little sounds all day: a click when you tap, a ping when a message lands. SoundBooth is a small web tool for listening to hundreds of these sounds, comparing them, and picking the right one for each moment.</span>
+        <span class="s">2026 →</span>
+      </a>
+      <div class="proj">
+        <span class="n">Children's books</span>
+        <span class="b">Picture books for children, and my way of learning to build an AI content pipeline end to end: Claude helps me write the stories, Midjourney paints the illustrations, and I stitch it all into books kids actually want to read.</span>
+        <span class="s">ongoing</span>
+        <div class="book-shelf">
+          <a class="book" href="https://github.com/mnsvz23/littlelearners/blob/main/WhenNoOneSaw(Draft).pdf" target="_blank" rel="noopener">
+            <img src="artwork/books/when-no-one-saw.jpg" alt="When No One Saw, a boy smiling at a steaming tiffin box" loading="lazy">
+            <span>when no one saw</span>
+          </a>
+          <a class="book" href="https://github.com/mnsvz23/littlelearners/blob/main/tiny%20roars%20brave%20heart.pdf" target="_blank" rel="noopener">
+            <img src="artwork/books/tiny-roars-brave-heart.jpg" alt="Tiny Roars, Brave Heart, colourful lion cubs roaring" loading="lazy">
+            <span>tiny roars, brave heart</span>
+          </a>
+          <a class="book" href="https://github.com/mnsvz23/littlelearners/blob/main/when_big_feelings_come.pdf" target="_blank" rel="noopener">
+            <img src="artwork/books/when-big-feelings-come.jpg" alt="When Big Feelings Come, a mother with two children" loading="lazy">
+            <span>when big feelings come</span>
+          </a>
+        </div>
+      </div>
+      <a class="proj" href="https://roomix.tv/" target="_blank" rel="noopener">
+        <span class="n">Roomix</span>
+        <span class="b">A television product for hotel rooms: ordering food, asking for things, all the reasons you'd otherwise ring the front desk. Designed for a screen you operate from across the room.</span>
+        <span class="s">2025 →</span>
+      </a>
+      <div class="proj">
+        <span class="n">Small experiments</span>
+        <span class="b">SwiftUI animation studies, a text-to-speech pipeline, a leave tracker nobody asked for. Where I go to learn something by building the smallest version of it.</span>
+        <span class="s">ongoing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="post-end pad">
+  <div class="col">
+    <div class="eyebrow">get in touch</div>
+    <a class="big" href="mailto:manasvaze23@gmail.com?subject=Hello">Say hello</a>
+    <div class="links">
+      <a href="index.html">← back home</a>
+      <a href="mailto:manasvaze23@gmail.com">email</a>
+      <a href="https://www.linkedin.com/in/manas-vaze/" target="_blank" rel="noopener">linkedin</a>
+      <a href="https://x.com/manasvaze" target="_blank" rel="noopener">x</a>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
