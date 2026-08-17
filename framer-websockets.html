@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Making Framer Prototypes Talk To Each Other</title>
+<meta name="description" content="A step-by-step tutorial for prototyping an interactive TV and remote pair in Framer, connected over WebSockets.">
+<meta property="og:title" content="Making Framer Prototypes Talk To Each Other">
+<meta property="og:description" content="A step-by-step tutorial for prototyping an interactive TV and remote pair in Framer, connected over WebSockets.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23EDF7F9'/><rect x='22' y='22' width='56' height='56' fill='%23274058'/></svg>">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="post.css">
+<style>
+  /* code blocks; post.css has no pre styling of its own */
+  .piece pre{
+    background:var(--surface);border:1px solid var(--hair-soft);
+    padding:18px 20px;overflow-x:auto;
+    font-family:var(--mono);font-size:12px;line-height:1.7;letter-spacing:0;
+    color:var(--ink)}
+
+  .piece figure{margin:0}
+  .piece figure img{display:block;width:100%;height:auto;border:1px solid var(--hair-soft)}
+  .piece figcaption{
+    margin-top:9px;font-family:var(--mono);font-size:10.5px;
+    letter-spacing:.02em;color:var(--ink-2)}
+
+  .era-note{
+    font-size:12.5px;line-height:1.65;color:var(--ink-2);
+    border-left:2px solid var(--leaf);padding-left:14px}
+</style>
+</head>
+<body>
+
+<div class="chrome pad">
+  <a href="index.html">← Manas Vaze</a>
+  <nav class="nav">
+    <a href="work.html">work</a>
+    <a href="writing.html">writing</a>
+    <a href="projects.html">projects</a>
+  </nav>
+</div>
+
+<div class="hero">
+  <div class="col">
+    <div class="date">December 2017 · originally published in Framer's Medium publication</div>
+    <h1>Making Framer Prototypes Talk To Each Other</h1>
+    <p class="lead">A step-by-step tutorial for easily prototyping interactive TV + remote prototypes in Framer.</p>
+    <img class="hero-img" src="artwork/framer-websockets/hero.jpg" alt="Minimal still life of a leaf on a table">
+    <div class="art-credit">Original photo by Sarah Dorweiler</div>
+  </div>
+</div>
+
+<section>
+  <div class="col piece">
+
+    <p class="era-note">This piece was written for Framer Classic, the CoffeeScript-based tool, which has since been deprecated. The WebSockets approach still holds; the Framer specifics are of their time.</p>
+
+    <p>Framer has quickly become my main go-to tool for prototyping ideas, interactions and animations for my design work.</p>
+
+    <p>As a designer who stayed away from code, I felt that Framer does have a bit of a steep learning curve and I did drop off it a couple of times. But now I see the possibilities of what a designer can do once they are comfortable with it. It has also taught me different ways of approaching problems, thinking about the implementation as a part of the design process.</p>
+
+    <p>In this particular post, we are going to look at how to make two Framer prototypes talk to each other.</p>
+
+    <p><strong>What's the need for prototypes to talk to each other?</strong><br>
+    If you are working on a product or company that has a set of apps and devices that form an ecosystem, it's very important to know the interaction model and possibilities occurring between these devices and apps.</p>
+
+    <p>Think <a href="https://store.google.com/" target="_blank" rel="noopener">Google</a> or <a href="https://www.amazon.com/Amazon-Echo-And-Alexa-Devices/b?ie=UTF8&amp;node=9818047011" target="_blank" rel="noopener">Amazon</a>, with a range of devices and apps that usually work together and form an ecosystem. The continuity and seamless interaction between these devices forms the crux of the user experience.</p>
+
+    <h2>the setup</h2>
+
+    <p>To begin, let's have a look at all the elements that will be used in making the prototypes work and talk with each other. The setup consists of 3 main parts:</p>
+
+    <ol>
+      <li>The Smart TV</li>
+      <li>The Remote Control</li>
+      <li>Server</li>
+    </ol>
+
+    <p>Apart from the basics in Framer, we will be making use of <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API" target="_blank" rel="noopener">WebSockets</a>: an advanced technology that makes it possible to open an interactive communication session between the user's browser and a server.</p>
+
+    <figure>
+      <img src="artwork/framer-websockets/setup.jpg" alt="Diagram of the TV, remote and server setup" loading="lazy">
+    </figure>
+
+    <h2>1. the smart tv</h2>
+
+    <p>This prototype will behave as the TV. The primary job of this prototype is to listen to swipe gestures and handle the UI navigation accordingly.</p>
+
+    <p>Let's begin by creating some app icons that can appear on the TV home screen.</p>
+
+    <pre><code># Create app icons and build the TV UI in a container layer
+container = new Layer
+	width: Screen.width
+	height: Screen.height
+	backgroundColor: "EAEAEA"
+
+container.center()
+
+# An array to hold all the app icons of the TV
+icons = []
+
+# Create app icons of the TV in a loop and push them onto the array
+for i in [0...5]
+	icon = new Layer
+		width: 200
+		height: 200
+		x: (280 * i) + 60
+		y: 60
+		borderRadius: 6
+		backgroundColor: Utils.randomColor()
+		parent: container
+	icons.push(icon)</code></pre>
+
+    <p>Use the devices dropdown to enable the TV device in the Framer preview window. Once you write the above code, your result should look something like this:</p>
+
+    <figure>
+      <img src="artwork/framer-websockets/tv-preview.png" alt="Smart TV prototype in Framer preview mode" loading="lazy">
+      <figcaption>Smart TV prototype, preview mode in Framer</figcaption>
+    </figure>
+
+    <p>Now, let's create the focus and hover interaction that we usually find in most smart TV UIs these days. For this, we are going to make use of a Framer module rather than write the complete logic by ourselves. Think of modules as a library of code that we can import into our prototypes to automate certain tasks, like handling the UI focus interaction in our case.</p>
+
+    <p>We'll use the <a href="https://github.com/bpxl-labs/FocusEngine" target="_blank" rel="noopener">Focus Engine module</a> by <a href="https://twitter.com/blackpixel" target="_blank" rel="noopener">blackpixel</a>. Copy the FocusEngine.coffee file and paste it in the '/modules' folder of your project. Next, we need to add the following line of code in Framer to include this module.</p>
+
+    <pre><code># Command to include the FocusEngine module in our TV prototype
+fe = require "FocusEngine"</code></pre>
+
+    <p>Now that we have imported the module into our prototype, it needs to be fed with the app icon layers we created earlier to make them interactive.</p>
+
+    <pre><code># Initialize the focus engine with the app icons. All the layers that
+# can be controlled with the remote need to be fed into the focus engine
+fe.initialize(icons)
+
+# Set the first icon to be on focus at the beginning
+fe.placeFocus(icons[0])</code></pre>
+
+    <p>Once the FocusEngine is initialised, you should be able to see the first layer on focus, like this:</p>
+
+    <figure>
+      <img src="artwork/framer-websockets/tv-focus.png" alt="First app icon highlighted by the focus engine" loading="lazy">
+    </figure>
+
+    <p>Next, we add the following code into our TV prototype. What this does is listen to swipe gestures and change the focus accordingly.</p>
+
+    <pre><code>ws.onmessage = (event) -&gt;
+	if event.data == "left"
+		fe.changeFocus("left")
+	else if event.data == "right"
+		fe.changeFocus("right")
+	else if event.data == "up"
+		fe.changeFocus("up")
+	else if event.data == "down"
+		fe.changeFocus("down")</code></pre>
+
+    <p>Our TV prototype set-up is done.</p>
+
+    <h2>2. the remote control</h2>
+
+    <p>This prototype will be the remote control to the TV. Its main job is to enable a touch surface that will act as a remote control and pass the swipe gestures to the TV.</p>
+
+    <p>Create another Framer project and name it "remote-control". In this prototype we will be using the <a href="https://github.com/bpxl-labs/RemoteLayer" target="_blank" rel="noopener">RemoteLayer module</a> to create an Apple TV remote touch surface that can be used to send gestures to the smart TV prototype. This module handles the swipe gestures automatically for us.</p>
+
+    <p>Copy the RemoteLayer.coffee file and paste it in the '/modules' folder of your TV remote Framer project. Next, we need to add the following line of code in Framer to include this module.</p>
+
+    <pre><code># Command to include the remote control module in our remote prototype
+RemoteLayer = require "RemoteLayer"</code></pre>
+
+    <p>Next, let's create a RemoteLayer instance and define some events and actions for when a user swipes on it.</p>
+
+    <pre><code># Create a remote control layer in a container layer and define the
+# action it should do on swipes (left, right, up and down)
+container = new Layer
+	size: Screen.size
+	backgroundColor: "EAEAEA"
+
+myRemote = new RemoteLayer
+	parent: container
+	swipeUpAction: -&gt;
+		ws.send("up")
+	swipeDownAction: -&gt;
+		ws.send("down")
+	swipeLeftAction: -&gt;
+		ws.send("left")
+	swipeRightAction: -&gt;
+		ws.send("right")</code></pre>
+
+    <p>In brief, the lines ws.send("up/down/left/right") are sending the messages to the WebSocket server, based on the type of swipe. Once you do the above, your remote control prototype should look something like this:</p>
+
+    <figure>
+      <img src="artwork/framer-websockets/remote.png" alt="Apple TV style remote control prototype" loading="lazy">
+      <figcaption>The module we are using creates an Apple TV remote object for us</figcaption>
+    </figure>
+
+    <h2>3. server</h2>
+
+    <p>Awesome! Now that we have both the smart TV and remote control prototypes set up, we will look into connecting the two.</p>
+
+    <p>For this, we shall host a Node server on our local machine. You can <a href="https://www.npmjs.com/get-npm" target="_blank" rel="noopener">download the npm package here</a> and install it by following the instructions.</p>
+
+    <p>Next, open the terminal, navigate to the TV prototype folder and type the following command. This will create a package.json file that the Node server will use.</p>
+
+    <pre><code>npm init --yes</code></pre>
+
+    <figure>
+      <img src="artwork/framer-websockets/npm-init.png" alt="Terminal showing npm init output" loading="lazy">
+    </figure>
+
+    <p>Next, we need to install express in the same folder, along with a couple of other dependencies. For WebSockets we'll install the ws module as well as bufferutil and utf-8-validate. Only ws is necessary, but the other two provide a performance boost.</p>
+
+    <pre><code>npm install --save --save-exact express
+npm install --save --save-exact ws bufferutil utf-8-validate</code></pre>
+
+    <figure>
+      <img src="artwork/framer-websockets/npm-deps.png" alt="Terminal showing dependency installation" loading="lazy">
+    </figure>
+
+    <p>Next, create a new file in the same folder and name it server.js, as shown below.</p>
+
+    <figure>
+      <img src="artwork/framer-websockets/server-file.png" alt="server.js file inside the project folder" loading="lazy">
+      <figcaption>server.js file to be created inside the remote control project folder</figcaption>
+    </figure>
+
+    <p>Now, open this file in your favourite text editor, paste the following code and save the file.</p>
+
+    <pre><code>'use strict';
+
+const express = require('express');
+const SocketServer = require('ws').Server;
+const path = require('path');
+
+const PORT = process.env.PORT || 3000;
+const INDEX = path.join(__dirname, 'index.html');
+
+const server = express()
+  .use((req, res) =&gt; res.sendFile(INDEX))
+  .listen(PORT, () =&gt; console.log(`Listening on ${ PORT }`));
+
+const wss = new SocketServer({ server });
+
+wss.on('connection', (ws) =&gt; {
+  console.log('Client connected');
+  ws.on('close', () =&gt; console.log('Client disconnected'));
+  ws.on('message', function incoming(data) {
+    console.log(wss.clients.size);
+    console.log(data);
+    wss.clients.forEach((client) =&gt; {
+      client.send(data);
+    });
+  });
+});</code></pre>
+
+    <p>In brief, the code here is creating a new Node/Express server and defining the path and other parameters for it. We also declare that we are hosting this locally and that the server shall listen on port 3000. Now, let's verify by running the server:</p>
+
+    <pre><code>node server.js</code></pre>
+
+    <figure>
+      <img src="artwork/framer-websockets/server-running.png" alt="Terminal confirming the server is listening on port 3000" loading="lazy">
+      <figcaption>Confirmation of the server running. It should say "Listening on 3000"</figcaption>
+    </figure>
+
+    <p>Congratulations! You have just set up a Node server locally and it's running fine. :)</p>
+
+    <p>The last step is to make the TV prototype listen to the remote control prototype. For this, we need to add some JavaScript in the index.html file of both the TV and remote control prototypes. Please note that this code has to go inside the &lt;body&gt; tags of the index.html file.</p>
+
+    <pre><code>&lt;script&gt;
+  var HOST = "ws://localhost:3000";
+  var ws = new WebSocket(HOST);
+  ws.onmessage = function (event) {};
+&lt;/script&gt;</code></pre>
+
+    <figure>
+      <img src="artwork/framer-websockets/index-js.png" alt="index.html open in a text editor with the WebSocket script added" loading="lazy">
+      <figcaption>Open the index.html file in your favourite text editor and paste the above JavaScript in it</figcaption>
+    </figure>
+
+    <p>This JavaScript is creating WebSocket objects, and the function ws.onmessage() will send across the message, or swipe gestures in our case.</p>
+
+    <p>Hit refresh on both the TV and remote prototypes and you are ready to go! Our set of prototypes are connected and can start working together.</p>
+
+    <figure>
+      <img src="artwork/framer-websockets/demo.gif" alt="The TV and remote prototypes responding to each other in real time" loading="lazy">
+      <figcaption>Snapshot of both the TV and remote prototypes talking to each other :)</figcaption>
+    </figure>
+
+    <h2>conclusion</h2>
+
+    <p>I hope you found this tutorial helpful in creating prototypes that can communicate with each other. This also opens up new ways to think about interaction between apps and devices. Excited to see what the community builds using Framer and WebSockets.</p>
+
+    <p>You can <a href="https://github.com/mnsvz/framer-websockets" target="_blank" rel="noopener">download the prototype files from here</a>.</p>
+
+    <div class="divider">· · ·</div>
+
+    <p>Special thanks to all the people on the Framer Slack channel that have helped me so far, including <a href="https://medium.com/@mamezito" target="_blank" rel="noopener">Sergey</a>, <a href="https://medium.com/@steveruiz" target="_blank" rel="noopener">Steve</a>, <a href="https://medium.com/@nvh" target="_blank" rel="noopener">nvh</a>, <a href="https://medium.com/@muhammadathar" target="_blank" rel="noopener">Muhammad Athar</a> and many more. This article was <a href="https://medium.com/framer-prototyping/making-framer-prototypes-talk-to-each-other-web-sockets-framer-85eedd2243aa" target="_blank" rel="noopener">originally published in Framer's Medium publication</a> in December 2017.</p>
+
+  </div>
+</section>
+
+<section class="post-end pad">
+  <div class="col">
+    <div class="eyebrow">get in touch</div>
+    <a class="big" href="mailto:manasvaze23@gmail.com?subject=Hello">Say hello</a>
+    <div class="links">
+      <a href="writing.html">← all writing</a>
+      <a href="mailto:manasvaze23@gmail.com">email</a>
+      <a href="https://www.linkedin.com/in/manas-vaze/" target="_blank" rel="noopener">linkedin</a>
+      <a href="https://x.com/manasvaze" target="_blank" rel="noopener">x</a>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

@@ -1,541 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manas Vaze — Design Lead</title>
-    <meta name="description" content="Design practitioner partnering with select early-stage founders. 15 years designing products at Swiggy, Truecaller, Ola, and Disney.">
-    <meta property="og:title" content="Manas Vaze — Design Lead">
-    <meta property="og:description" content="Design practitioner partnering with select early-stage founders. I still do the work.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="og-image.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Manas Vaze — Design Lead">
-    <meta name="twitter:description" content="Design practitioner partnering with select early-stage founders. I still do the work.">
-    <meta name="twitter:image" content="og-image.png">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230A0E0A'/><text x='50' y='76' font-size='72' font-family='monospace' font-weight='700' fill='%2333FF99' text-anchor='middle'>/</text></svg>">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <style>
-
-    /* ----------------------------------------
-       Reset & Base
-    ---------------------------------------- */
-
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    html { overflow-x: hidden; }
-
-    body {
-        background: #0A0E0A;
-        color: #33FF99;
-        font-family: 'Space Mono', monospace;
-        font-size: clamp(12px, 2.8vw, 16px);
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        overflow-x: hidden;
-        width: 100%;
-    }
-
-    ::selection { background: #33FF99; color: #0A0E0A; }
-
-    /* Scanline overlay */
-    body::after {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background: repeating-linear-gradient(
-            0deg,
-            transparent, transparent 2px,
-            rgba(0, 0, 0, 0.15) 2px, rgba(0, 0, 0, 0.15) 4px
-        );
-        pointer-events: none;
-        z-index: 9999;
-    }
-
-    .page {
-        max-width: 620px;
-        width: 100%;
-        min-width: 0;
-        padding: 8rem 2rem;
-        overflow-wrap: break-word;
-        word-break: break-word;
-    }
-
-    /* ----------------------------------------
-       Glitch Effect (shared)
-    ---------------------------------------- */
-
-    .glitch {
-        position: relative;
-        display: inline-block;
-        text-decoration: none;
-    }
-
-    .glitch::before,
-    .glitch::after {
-        content: attr(data-text);
-        position: absolute;
-        top: 0;
-        left: 0;
-        opacity: 0;
-        pointer-events: none;
-    }
-
-    .glitch::before { color: #FF8C42; text-shadow: 2px 0 #FF8C42; }
-    .glitch::after  { color: #00FFFF; text-shadow: -2px 0 #00FFFF; }
-
-    .glitch:hover              { animation: glitch-main 0.4s steps(2) both; }
-    .glitch:hover::before      { opacity: 0.7; animation: glitch-1 0.4s steps(2) both; }
-    .glitch:hover::after       { opacity: 0.7; animation: glitch-2 0.4s steps(2) both; }
-
-    @keyframes glitch-main {
-        0%   { transform: none; }
-        10%  { transform: skewX(-2deg); }
-        15%  { clip-path: inset(40% 0 30% 0); transform: translate(-3px) skewX(2deg); }
-        20%  { clip-path: inset(0); transform: none; }
-        35%  { clip-path: inset(20% 0 55% 0); transform: translate(3px); }
-        40%  { clip-path: inset(0); transform: none; }
-        55%  { clip-path: inset(60% 0 10% 0); transform: translate(-2px) skewX(-1deg); }
-        60%  { clip-path: inset(0); transform: none; }
-        80%  { clip-path: inset(10% 0 70% 0); transform: translate(2px); }
-        85%  { clip-path: inset(0); transform: none; }
-        100% { transform: none; }
-    }
-
-    @keyframes glitch-1 {
-        0%   { transform: none; opacity: 0; }
-        10%  { transform: translate(3px, -1px); opacity: 0.7; }
-        15%  { transform: translate(-2px); clip-path: inset(30% 0 40% 0); }
-        20%  { transform: none; opacity: 0; }
-        35%  { transform: translate(4px, 1px); opacity: 0.5; clip-path: inset(50% 0 20% 0); }
-        40%  { transform: none; opacity: 0; }
-        55%  { transform: translate(-3px, -1px); opacity: 0.7; clip-path: inset(10% 0 60% 0); }
-        60%  { transform: none; opacity: 0; }
-        80%  { transform: translate(2px); opacity: 0.4; clip-path: inset(70% 0 5% 0); }
-        85%  { transform: none; opacity: 0; }
-        100% { opacity: 0; }
-    }
-
-    @keyframes glitch-2 {
-        0%   { transform: none; opacity: 0; }
-        10%  { transform: translate(-3px, 1px); opacity: 0.5; }
-        15%  { transform: translate(2px); clip-path: inset(50% 0 20% 0); }
-        20%  { transform: none; opacity: 0; }
-        35%  { transform: translate(-4px, -1px); opacity: 0.7; clip-path: inset(15% 0 55% 0); }
-        40%  { transform: none; opacity: 0; }
-        55%  { transform: translate(3px, 1px); opacity: 0.5; clip-path: inset(65% 0 10% 0); }
-        60%  { transform: none; opacity: 0; }
-        80%  { transform: translate(-2px); opacity: 0.6; clip-path: inset(5% 0 75% 0); }
-        85%  { transform: none; opacity: 0; }
-        100% { opacity: 0; }
-    }
-
-    /* ----------------------------------------
-       Terminal Prompt
-    ---------------------------------------- */
-
-    .prompt {
-        margin-bottom: 4rem;
-        user-select: none;
-        font-weight: 700;
-        text-transform: uppercase;
-        transition: color 0.15s ease;
-    }
-
-    .prompt.recognized { color: #FF8C42; }
-
-    .cursor {
-        display: inline-block;
-        width: 0.6em;
-        height: 1.1em;
-        background: #33FF99;
-        vertical-align: text-bottom;
-        margin-left: 2px;
-        animation: blink 0.8s step-end infinite;
-    }
-
-    .prompt.recognized .cursor { background: #FF8C42; }
-
-    @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50%      { opacity: 0; }
-    }
-
-    /* ----------------------------------------
-       Hero
-    ---------------------------------------- */
-
-    .author {
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 0.5rem;
-    }
-
-    h1 {
-        font-size: 1rem;
-        font-weight: 700;
-        line-height: 1.7;
-        margin-bottom: 3.5rem;
-    }
-
-    h1 .dim { color: #1A5C35; }
-
-    .intro {
-        font-size: 1rem;
-        line-height: 1.9;
-        letter-spacing: 0.01em;
-        word-spacing: 0.05em;
-        color: #3D9960;
-    }
-
-    .intro a {
-        color: #3D9960;
-    }
-
-    .intro a:hover {
-        color: #33FF99;
-    }
-
-    .work-cta {
-        margin-top: 1.5rem;
-        font-weight: 700;
-        color: #1A5C35;
-    }
-
-    .work-cta:hover {
-        color: #33FF99;
-    }
-
-    /* ----------------------------------------
-       Logo Carousel
-    ---------------------------------------- */
-
-    .carousel {
-        margin-top: 5rem;
-        overflow: hidden;
-        position: relative;
-        mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
-        -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
-    }
-
-    .carousel-track {
-        display: flex;
-        align-items: center;
-        gap: 3.5rem;
-        width: max-content;
-    }
-
-    .carousel-logo {
-        flex-shrink: 0;
-        height: 20px;
-        transition: opacity 0.3s ease;
-    }
-
-    .carousel-logo:hover { opacity: 0.7; }
-
-    .carousel-logo.logo-swiggy     { height: 20px; }
-    .carousel-logo.logo-truecaller { height: 18px; }
-    .carousel-logo.logo-sundial    { height: 24px; }
-    .carousel-logo.logo-disney     { height: 28px; }
-    .carousel-logo.logo-ola        { height: 28px; }
-    .carousel-logo.logo-realfast   { height: 19px; }
-
-    /* ----------------------------------------
-       Blog Post
-    ---------------------------------------- */
-
-    /* ----------------------------------------
-       Blog Link (homepage)
-    ---------------------------------------- */
-
-    .blog-link {
-        margin-top: 8rem;
-    }
-
-    .blog-link-label {
-        font-weight: 700;
-        color: #1A5C35;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 1rem;
-    }
-
-    .blog-link a {
-        display: block;
-        text-decoration: none;
-        cursor: pointer;
-    }
-
-    .blog-link-title {
-        font-weight: 700;
-        color: #33FF99;
-        transition: color 0.15s ease;
-    }
-
-    .blog-link a:hover .blog-link-title {
-        color: #00FFFF;
-    }
-
-    .blog-link-date {
-        color: #1A5C35;
-        margin-top: 0.25rem;
-    }
-
-
-    /* ----------------------------------------
-       Services
-    ---------------------------------------- */
-
-    .services {
-        margin-top: 8rem;
-    }
-
-    .services-heading {
-        font-weight: 700;
-        color: #1A5C35;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 2.5rem;
-    }
-
-    .service {
-        margin-bottom: 2.5rem;
-    }
-
-    .service-title {
-        font-weight: 700;
-    }
-
-    .service-desc {
-        line-height: 1.7;
-        color: #3D9960;
-        margin-top: 0.25rem;
-    }
-
-    .service-cta {
-        margin-top: 0.5rem;
-        font-weight: 700;
-        color: #1A5C35;
-    }
-
-    .service-cta:hover {
-        color: #33FF99;
-    }
-
-    /* ----------------------------------------
-       Footer
-    ---------------------------------------- */
-
-    footer {
-        margin-top: 8rem;
-        padding-top: 3rem;
-        border-top: 1px solid #133D22;
-    }
-
-    .footer-cta {
-        font-weight: 700;
-        color: #33FF99;
-    }
-
-    .footer-links {
-        display: flex;
-        gap: 1.5rem;
-        margin-top: 1rem;
-    }
-
-    .footer-links a {
-        color: #1A5C35;
-        text-decoration: none;
-        transition: color 0.15s ease;
-    }
-
-    .footer-links a:hover { color: #3D9960; }
-
-    /* ----------------------------------------
-       Responsive
-    ---------------------------------------- */
-
-    @media (max-width: 600px) {
-        .page { padding: 3rem 1.25rem; }
-        .prompt { margin-bottom: 2.5rem; }
-        h1 { line-height: 1.6; margin-bottom: 2.5rem; letter-spacing: 0; }
-        .intro { letter-spacing: 0; word-spacing: 0; line-height: 1.75; }
-        .carousel { margin-top: 3rem; }
-        .carousel-track { gap: 2rem; }
-        .blog-link { margin-top: 3rem; }
-        .services { margin-top: 4.5rem; }
-        .services-heading { margin-bottom: 1.5rem; }
-        .service { margin-bottom: 1.75rem; }
-        footer { margin-top: 4.5rem; padding-top: 2rem; }
-        .footer-links { flex-wrap: wrap; gap: 1rem; }
-        .glitch, .footer-links a { padding: 0.3rem 0; }
-    }
-
-    @media (max-width: 380px) {
-        .page { padding: 2.5rem 1rem; }
-    }
-
-    /* Touch devices: disable glitch hover */
-    @media (hover: none) {
-        .glitch:hover { animation: none; }
-        .glitch:hover::before { opacity: 0; animation: none; }
-        .glitch:hover::after  { opacity: 0; animation: none; }
-    }
-
-    .page-transition {
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manas Vaze · Design Leader</title>
+<meta name="description" content="Design leader for teams building with AI. Working with realfast; previously Head of Product Design at Truecaller, and twelve years at Sundial, Ola and Swiggy.">
+<meta property="og:title" content="Manas Vaze · Design Leader">
+<meta property="og:description" content="Design leader for teams building with AI. Working with realfast; previously Truecaller, Sundial, Ola and Swiggy.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Manas Vaze · Design Leader">
+<meta name="twitter:description" content="Design leader for teams building with AI. Working with realfast; previously Truecaller, Sundial, Ola and Swiggy.">
+<meta name="twitter:image" content="og-image.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23EDF7F9'/><rect x='22' y='22' width='56' height='56' fill='%23274058'/></svg>">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="site.css">
+<style>
+  /* ---------- hero ---------- */
+  .hero{padding-top:104px;padding-bottom:clamp(44px,7vh,76px)}
+  .hero-grid{
+    display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);
+    gap:clamp(28px,5vw,72px);align-items:stretch}
+  @media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:32px}}
+
+  .hero h1{
+    font-weight:500;font-size:clamp(34px,5.6vw,80px);line-height:1.04;letter-spacing:-.032em;
+    max-width:min(16ch,100%);text-wrap:balance}
+  .hero .intro{
+    margin-top:clamp(20px,3vh,30px);font-size:15px;line-height:1.7;letter-spacing:-.12px;
+    max-width:min(52ch,100%)}
+  .hero .intro a,
+  .hero .intro .co{font-weight:500;color:var(--ink)}
+  .hero .intro a{border-bottom:1px solid var(--hair);transition:border-color .18s ease}
+  .hero .intro a:hover{border-color:currentColor}
+
+  .shot-wrap{position:relative;min-height:440px}
+  .shot-wrap img{
+    position:absolute;inset:0;display:block;width:100%;height:100%;
+    object-fit:cover;object-position:50% 26%;
+    border:1px solid var(--hair)}
+  @media (max-width:900px){
+    .shot-wrap{position:static;min-height:0}
+    .shot-wrap img{position:static;height:auto;aspect-ratio:5/4;object-position:50% 30%}
+  }
+
+  .hero-cta{margin-top:clamp(36px,5vh,54px)}
+
+  .rise{opacity:0;transform:translateY(14px);animation:rise .8s cubic-bezier(.2,.7,.2,1) .15s forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .hero .intro.rise{animation-delay:.3s}
+  .hero .shot-wrap.rise{animation-delay:.2s}
+  .hero .hero-cta.rise{animation-delay:.44s}
+  @media (prefers-reduced-motion:reduce){.rise{opacity:1;transform:none}}
+
+  .cols2{display:grid;grid-template-columns:1fr 1fr;gap:36px clamp(28px,6vw,84px)}
+  @media (max-width:720px){.cols2{grid-template-columns:1fr;gap:34px}}
+  .cols2 h3{
+    font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.02em;
+    color:var(--ink-2);margin-bottom:20px}
+  .arrows{list-style:none;display:grid;gap:12px}
+  .arrows li{
+    display:grid;grid-template-columns:auto 1fr;gap:11px;align-items:baseline;
+    font-size:15px;letter-spacing:-.12px}
+  .arrows li::before{content:'→';color:var(--leaf)}
+
+  /* a photo that only turns up if you go looking for it */
+  .peek{position:relative;cursor:help;box-shadow:inset 0 -1px 0 var(--leaf)}
+  .peek img{
+    position:absolute;left:50%;bottom:calc(100% + 14px);translate:-50% 0;
+    width:250px;max-width:none;height:auto;display:block;
+    border:1px solid var(--hair);box-shadow:0 12px 28px rgba(39,64,88,.18);
+    opacity:0;transform:translateY(8px) rotate(-2.5deg);
+    transition:opacity .18s ease,transform .3s cubic-bezier(.2,.7,.2,1);
+    pointer-events:none;z-index:6}
+  .peek:hover img,.peek:focus-visible img{opacity:1;transform:translateY(0) rotate(-2.5deg)}
+  @media (hover:none),(max-width:720px){.peek img{display:none}}
+  @media (prefers-reduced-motion:reduce){.peek img{transition:opacity .01ms;transform:rotate(-2.5deg)}}
+
+  .now-block p{max-width:min(58ch,100%)}
+  .now-block p + p{margin-top:14px}
+</style>
 </head>
 <body>
-    <div class="page">
 
-        <div class="prompt">/<span id="word"></span><span class="cursor"></span></div>
+<div class="chrome pad">
+  <a href="index.html">Manas Vaze</a>
+  <nav class="nav">
+    <a href="work.html">work</a>
+    <a href="writing.html">writing</a>
+    <a href="projects.html">projects</a>
+  </nav>
+</div>
 
-        <div class="author">Manas Vaze</div>
-        <h1>Design practitioner partnering with select early-stage founders.<span class="dim"> I still do the work.</span></h1>
-
-        <p class="intro">I've spent 15 years designing products at <a href="https://www.swiggy.com/" target="_blank" rel="noopener" class="glitch" data-text="Swiggy">Swiggy</a>, <a href="https://www.truecaller.com/" target="_blank" rel="noopener" class="glitch" data-text="Truecaller">Truecaller</a>, <a href="https://www.olacabs.com/" target="_blank" rel="noopener" class="glitch" data-text="Ola">Ola</a>, and <a href="https://www.disney.in/" target="_blank" rel="noopener" class="glitch" data-text="Disney">Disney</a> — building teams, setting up systems, and keeping craft intact as companies scale. Right now I'm at <a href="https://www.realfast.ai/" target="_blank" rel="noopener" class="glitch" data-text="Realfast">Realfast</a>, designing user experiences for agentic salesforce workflows.</p>
-        <p class="work-cta"><a href="mailto:manasvaze23@gmail.com?subject=Request to See Work" class="glitch work-cta" data-text="Request access to selected work →">Request access to selected work →</a></p>
-
-        <div class="carousel">
-            <div class="carousel-track">
-                <img src="logos/truecaller.svg" alt="Truecaller" class="carousel-logo logo-truecaller">
-                <img src="logos/swiggy.svg"     alt="Swiggy"     class="carousel-logo logo-swiggy">
-                <img src="logos/sundial.svg"    alt="Sundial"    class="carousel-logo logo-sundial">
-                <img src="logos/disney.svg"     alt="Disney"     class="carousel-logo logo-disney">
-                <img src="logos/ola.svg"        alt="Ola"        class="carousel-logo logo-ola">
-                <img src="logos/realfast.svg"   alt="Realfast"   class="carousel-logo logo-realfast">
-                <img src="logos/truecaller.svg" alt="Truecaller" class="carousel-logo logo-truecaller">
-                <img src="logos/swiggy.svg"     alt="Swiggy"     class="carousel-logo logo-swiggy">
-                <img src="logos/sundial.svg"    alt="Sundial"    class="carousel-logo logo-sundial">
-                <img src="logos/disney.svg"     alt="Disney"     class="carousel-logo logo-disney">
-                <img src="logos/ola.svg"        alt="Ola"        class="carousel-logo logo-ola">
-                <img src="logos/realfast.svg"   alt="Realfast"   class="carousel-logo logo-realfast">
-            </div>
-        </div>
-
-        <div class="blog-link">
-            <div class="blog-link-label">Log Entries</div>
-            <a href="case-study-exowork.html">
-                <div class="blog-link-title glitch" data-text="Taming the Vibe — ExoWork Case Study →">Taming the Vibe — ExoWork Case Study →</div>
-                <div class="blog-link-date">April 2026</div>
-            </a>
-            <a href="case-study-exodesigner.html" style="margin-top: 1.5rem; display: block;">
-                <div class="blog-link-title glitch" data-text="ExoDesigner — A Design Reviewer on Every Branch →">ExoDesigner — A Design Reviewer on Every Branch →</div>
-                <div class="blog-link-date">April 2026</div>
-            </a>
-            <a href="ai-design-partner.html" style="margin-top: 1.5rem; display: block;">
-                <div class="blog-link-title glitch" data-text="Using AI as a Design Partner →">Using AI as a Design Partner →</div>
-                <div class="blog-link-date">March 2026</div>
-            </a>
-        </div>
-
-        <section class="services">
-            <div class="services-heading">How I Work</div>
-            <div class="service">
-                <div class="service-title">0 to 1</div>
-                <div class="service-desc">You have an idea but nothing built yet. I design the first version of your product.</div>
-                <a href="mailto:manasvaze23@gmail.com?subject=0 to 1 Inquiry" class="glitch service-cta" data-text="Get in Touch →">Get in Touch →</a>
-            </div>
-            <div class="service">
-                <div class="service-title">Refine</div>
-                <div class="service-desc">You already have something live, but it needs work. I make it clearer, cleaner, and easier to use.</div>
-                <a href="mailto:manasvaze23@gmail.com?subject=Refine Inquiry" class="glitch service-cta" data-text="Get in Touch →">Get in Touch →</a>
-            </div>
-            <div class="service">
-                <div class="service-title">Future Sprint</div>
-                <div class="service-desc">A two week sprint to explore new concepts, features, and directions for your product.</div>
-                <a href="mailto:manasvaze23@gmail.com?subject=Future Sprint Inquiry" class="glitch service-cta" data-text="Get in Touch →">Get in Touch →</a>
-            </div>
-            <div class="service">
-                <div class="service-title">Ongoing</div>
-                <div class="service-desc">I work alongside your team on a long term basis, designing, improving, and shipping over time.</div>
-                <a href="mailto:manasvaze23@gmail.com?subject=Ongoing Inquiry" class="glitch service-cta" data-text="Get in Touch →">Get in Touch →</a>
-            </div>
-        </section>
-
-        <footer>
-            <a href="mailto:manasvaze23@gmail.com" class="glitch footer-cta" data-text="Get in Touch →">Get in Touch →</a>
-            <div class="footer-links">
-                <a href="https://www.linkedin.com/in/manas-vaze/" target="_blank" rel="noopener">LinkedIn</a>
-                <a href="https://x.com/manasvaze" target="_blank" rel="noopener">X/Twitter</a>
-            </div>
-        </footer>
-
+<header class="hero pad">
+  <div class="hero-grid">
+    <div class="hero-col">
+      <h1 class="rise">Design leader for teams building with AI</h1>
+      <p class="intro rise">Currently working with <a href="https://www.realfast.ai/" target="_blank" rel="noopener">realfast</a>, where I own the product experience for AI tools in finance, healthcare and capital markets, the kind of software people need to trust before they act on it. Before this I was Head of Product Design at <a href="https://www.truecaller.com/" target="_blank" rel="noopener">Truecaller</a>, after twelve years of consumer and B2B products at <a href="https://www.sundial.ai/company/about" target="_blank" rel="noopener">Sundial</a>, <span class="co">Frontrow</span>, <a href="https://www.olacabs.com/" target="_blank" rel="noopener">Ola</a> and <a href="https://www.swiggy.com/" target="_blank" rel="noopener">Swiggy</a>.</p>
     </div>
 
+    <div class="shot-wrap rise">
+      <img src="photos/manas-working.jpg" alt="Manas at his desk" fetchpriority="high">
+    </div>
+  </div>
 
-    <script>
-    (function () {
-        var words = ['strategy', 'systems', 'craft', 'ship'];
-        var el    = document.getElementById('word');
-        var cmd   = document.querySelector('.prompt');
-        var wi    = 0, ci = 0, deleting = false;
 
-        function tick() {
-            var w = words[wi];
-            if (!deleting) {
-                el.textContent = w.slice(0, ++ci);
-                if (ci >= w.length) {
-                    cmd.classList.add('recognized');
-                    return setTimeout(function () {
-                        deleting = true;
-                        cmd.classList.remove('recognized');
-                        tick();
-                    }, 1200);
-                }
-                setTimeout(tick, 80);
-            } else {
-                el.textContent = w.slice(0, --ci);
-                if (ci <= 0) {
-                    deleting = false;
-                    wi = (wi + 1) % words.length;
-                    return setTimeout(tick, 300);
-                }
-                setTimeout(tick, 50);
-            }
-        }
-        tick();
+  <div class="hero-cta rise">
+    <a class="cta" href="mailto:manasvaze23@gmail.com?subject=Hello">Contact me →</a>
+  </div>
+</header>
 
-        var track  = document.querySelector('.carousel-track');
-        var offset = 0, paused = false;
+<section class="band pad" id="now">
+  <div class="rail">
+    <div class="tag">now</div>
+    <div class="now-block">
+      <div>
+        <p>Most of 2026 has gone into the enterprise world, where I've been designing human&lt;&gt;agent workflows for clients in regulated industries. Reporting automation, platform migrations, and interfaces for people who aren't developers and shouldn't have to be.</p>
+        <p>The rest of my time goes into the tools my own team works in: an internal workbench, and a design system that enforces itself in the codebase instead of sitting in Figma waiting for someone to read it.</p>
+        <p>Outside work I'm making illustrated books for children with AI, and building a SaaS product in hospitality tech.</p>
+        <div class="stamp">updated august 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        track.addEventListener('mouseenter', function () { paused = true; });
-        track.addEventListener('mouseleave', function () { paused = false; });
-        track.addEventListener('touchstart', function () { paused = true; }, { passive: true });
-        track.addEventListener('touchend', function () { paused = false; }, { passive: true });
+<section class="band pad" id="focus">
+  <div class="rail">
+    <div class="tag">focus</div>
+    <div class="cols2">
+      <div>
+        <h3>Specialised in</h3>
+        <ul class="arrows">
+          <li>Agentic product experiences</li>
+          <li>Design systems that LLMs understand and use</li>
+          <li>0 to 1 product thinking</li>
+          <li>Scaling design teams</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Open to</h3>
+        <ul class="arrows">
+          <li>Advisory roles</li>
+          <li>Fractional design leadership</li>
+          <li>Early-stage product advising</li>
+          <li>Mentoring design teams</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
-        (function scroll() {
-            if (!paused) {
-                offset += 0.3;
-                var half = track.scrollWidth / 2;
-                if (offset >= half) offset -= half;
-                track.style.transform = 'translateX(-' + offset + 'px)';
-            }
-            requestAnimationFrame(scroll);
-        })();
+<section class="band pad" id="off">
+  <div class="rail">
+    <div class="tag">off the clock</div>
+    <div>
+      <p class="lede">Two things I'd talk about for too long if you let me.</p>
+      <div class="rows" style="margin-top:26px">
+        <div class="proj">
+          <span class="n">Formula 1</span>
+          <span class="b">The strategy calls, mostly. A race is usually decided by someone on the pit wall three laps before anything visible happens, and I will argue about an undercut with people who did not ask.</span>
+          <span class="s"></span>
+        </div>
+        <div class="proj">
+          <span class="n">Food</span>
+          <span class="b">Friends first, food as the excuse. I will book the table, over-order on purpose, and refuse to let anyone leave early. <span class="peek" tabindex="0">Exhibit A<img src="photos/manas-food.jpg" alt="" aria-hidden="true" loading="lazy"></span>.</span>
+          <span class="s"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    })();
+<section class="close pad" id="contact">
+  <div class="rail">
+    <div class="tag">contact</div>
+    <div>
+      <a class="big" href="mailto:manasvaze23@gmail.com?subject=Hello">Say hello</a>
+      <div class="close-links">
+        <a href="mailto:manasvaze23@gmail.com">Email →</a>
+        <a href="https://www.linkedin.com/in/manas-vaze/" target="_blank" rel="noopener">LinkedIn →</a>
+        <a href="https://x.com/manasvaze" target="_blank" rel="noopener">X/Twitter →</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-    // Page transition: glitch flash on internal links
-    document.querySelectorAll('a[href]').forEach(function (a) {
-        var href = a.getAttribute('href');
-        if (!href || href.startsWith('http') || href.startsWith('mailto') || href.startsWith('#')) return;
-        a.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.body.classList.add('page-transition');
-            setTimeout(function () { window.location.href = href; }, 300);
-        });
-    });
-    </script>
+
 </body>
 </html>
