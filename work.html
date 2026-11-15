@@ -62,6 +62,29 @@
   .role-body p{font-size:13.5px;line-height:1.65;color:var(--ink-2)}
   .role-body p + p{margin-top:9px}
   .role-body strong{color:var(--ink);font-weight:500}
+  /* case studies: the row's work, shown rather than footnoted.
+     Each card carries its product's own colour; the whole card is the link. */
+  .case{
+    display:grid;grid-template-columns:168px minmax(0,1fr);gap:20px;align-items:center;
+    margin-top:18px;max-width:min(58ch,100%);padding:10px 20px 10px 10px;
+    background:var(--surface);border:1px solid var(--hair-soft);
+    transition:border-color .2s ease,background .2s ease}
+  .case-art{display:block;overflow:hidden;aspect-ratio:4/3}
+  .case-art img{display:block;width:100%;height:100%;object-fit:cover;
+    transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+  .case-text{display:grid;gap:10px}
+  .case-title{font-size:16px;line-height:1.35;letter-spacing:-.2px;font-weight:500;color:var(--ink);text-wrap:balance}
+  .case-cta{font-size:13px;color:var(--ink-2);width:fit-content;
+    box-shadow:inset 0 -1px 0 var(--hair);transition:color .2s ease,box-shadow .2s ease}
+  .case:hover{border-color:var(--ink);background:var(--surface-2)}
+  .case:hover .case-art img{transform:scale(1.04)}
+  .case:hover .case-cta{color:var(--ink);box-shadow:inset 0 -1px 0 var(--ink)}
+  .case:focus-visible{outline:1.5px solid var(--leaf);outline-offset:3px}
+  @media (max-width:520px){
+    .case{grid-template-columns:1fr;padding:10px;gap:14px}
+    .case-text{padding:0 6px 6px}
+  }
+  @media (prefers-reduced-motion:reduce){.case:hover .case-art img{transform:none}}
   @media (max-width:720px){
     .role{grid-template-columns:1fr;gap:10px}
   }
@@ -252,11 +275,26 @@
           <div class="role-when">Apr 2021 to Apr 2022</div>
         </div>
         <div>
-          <div class="role-co"><a href="https://www.sundial.ai/" target="_blank" rel="noopener">Sundial Inc.</a></div>
+          <div class="role-co"><a href="https://www.axios.com/2026/10/23/meta-ai-data-platform-sundial" target="_blank" rel="noopener">Sundial Inc.</a></div>
           <div class="role-note">Founded by Julie Zhuo and Chandra Narayanan to make product analytics usable by everyone in a company.</div>
           <div class="role-body">
             <p>Shaped early product direction through discovery, competitive analysis and scoping. Designed and prototyped the analytics reporting experience.</p>
           </div>
+        </div>
+      </div>
+
+      <div class="role">
+        <div>
+          <div class="role-title">Design Lead</div>
+          <div class="role-when">2020</div>
+        </div>
+        <div>
+          <div class="role-co"><a href="https://frontrow.co.in/" target="_blank" rel="noopener">FrontRow</a></div>
+          <div class="role-note">FrontRow is an expert-led learning platform for creative arts, sports &amp; fitness and hobbies.</div>
+          <div class="role-body">
+            <p>I began working closely with the founding team at FrontRow on creative strategy, visual identity and motion language, the result is a well-crafted consumer edutainment brand language that helps to inspire a learning lifestyle in everyone.</p>
+          </div>
+          <a class="case" href="case-study-frontrow.html"><span class="case-art"><img src="artwork/case-studies/frontrow/card.webp" alt="FrontRow category illustrations in amber on black" width="600" height="450" loading="lazy"></span><span class="case-text"><span class="case-title">A frontrow seat to pursue your passion</span><span class="case-cta">Read the case study</span></span></a>
         </div>
       </div>
 
@@ -270,6 +308,7 @@
           <div class="role-body">
             <p>Led design and illustration at a vernacular learning platform serving students across income levels and geographies. Owned the platform redesign.</p>
           </div>
+          <a class="case" href="case-study-entri.html"><span class="case-art"><img src="artwork/case-studies/entri/card.webp" alt="Entri course covers in Malayalam, English and Tamil" width="600" height="450" loading="lazy"></span><span class="case-text"><span class="case-title">Affordable education &amp; upskilling for the next billion users.</span><span class="case-cta">Read the case study</span></span></a>
         </div>
       </div>
 
@@ -283,6 +322,7 @@
           <div class="role-body">
             <p>Led a team of 4 on the consumer experience for Ola's connected-car platform: in-cab entertainment, personalised content and advanced car controls.</p>
           </div>
+          <a class="case" href="case-study-olaplay.html"><span class="case-art"><img src="artwork/case-studies/olaplay/card.webp" alt="A passenger enjoying in-car entertainment on OlaPlay" width="600" height="450" loading="lazy"></span><span class="case-text"><span class="case-title">Entertainment on the back seat of your Ola</span><span class="case-cta">Read the case study</span></span></a>
         </div>
       </div>
 
@@ -309,6 +349,7 @@
           <div class="role-body">
             <p>Led the consumer redesign across iOS, Android and web, introducing several of Swiggy's core consumer features: live delivery tracking, predictive address management, improved restaurant listings, and a recommendations-led menu.</p>
           </div>
+          <a class="case" href="case-study-swiggy.html"><span class="case-art"><img src="artwork/case-studies/swiggy/card.webp" alt="The Swiggy redesign: food packaging on Swiggy orange" width="600" height="450" loading="lazy"></span><span class="case-text"><span class="case-title">Lightning fast food delivery, made simple.</span><span class="case-cta">Read the case study</span></span></a>
         </div>
       </div>
 
