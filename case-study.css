@@ -1,0 +1,491 @@
+/* ============================================================
+   Case studies. Sits on site.css only (not post.css).
+
+   One container, one rail. Section names sit in the rail and stay
+   with you while you read the section; text keeps a readable measure
+   beside them; the work itself spans the full container, so every
+   right edge on the page lands in the same place.
+   ============================================================ */
+
+:root{
+  --cs-max:1240px;
+  --cs-rail:232px;
+  --cs-gap:56px;
+  --cs-measure:680px;
+  --cs-side:clamp(20px,4vw,48px);
+  /* the distance media travels left to cover the rail */
+  --cs-reach:calc(var(--cs-rail) + var(--cs-gap));
+}
+@media (max-width:960px){
+  :root{--cs-rail:0px;--cs-gap:0px}
+}
+
+.cs-wrap{max-width:calc(var(--cs-max) + 2 * var(--cs-side));margin:0 auto;
+  padding-left:var(--cs-side);padding-right:var(--cs-side)}
+
+/* links inside the reading text */
+.cs-flow a,.cs-facts a,.cs-hero-media figcaption a{
+  border-bottom:1px solid var(--hair);transition:border-color .18s ease}
+.cs-flow a:hover,.cs-facts a:hover{border-color:var(--ink)}
+
+/* ---------- hero ---------- */
+.cs-hero{padding-top:clamp(104px,15vh,152px)}
+.cs-hero-top{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,var(--cs-rail));
+  gap:var(--cs-gap);align-items:end}
+.cs-disc{font-size:15px;line-height:1.4;color:var(--ink-2);margin-bottom:20px}
+.cs-hero h1{
+  font-weight:500;font-size:clamp(40px,6.2vw,78px);line-height:1;
+  letter-spacing:-.038em;max-width:16ch;text-wrap:balance}
+.cs-lead{
+  margin-top:22px;font-size:clamp(18px,1.6vw,21px);line-height:1.45;
+  letter-spacing:-.015em;color:var(--ink-2);max-width:36ch}
+
+/* year / role / company, read top to bottom like a credit */
+.cs-facts{display:grid;gap:0;border-top:1px solid var(--hair)}
+.cs-facts > div{
+  display:grid;grid-template-columns:76px 1fr;gap:12px;align-items:baseline;
+  padding:11px 0;border-bottom:1px solid var(--hair-soft)}
+.cs-facts dt{font-size:13px;color:var(--ink-2)}
+.cs-facts dd{font-size:15px;line-height:1.35;font-weight:500}
+
+.cs-hero-media{margin-top:clamp(40px,6vh,64px)}
+.cs-hero-media img,.cs-hero-media video{
+  display:block;width:100%;height:auto;background:var(--surface)}
+.cs-hero-media figcaption{margin-top:12px;font-size:13px;color:var(--ink-2)}
+
+@media (max-width:960px){
+  .cs-hero-top{grid-template-columns:1fr;gap:32px}
+  .cs-facts{grid-template-columns:repeat(3,minmax(0,1fr));border-top:0}
+  .cs-facts > div{grid-template-columns:1fr;gap:3px;border-top:1px solid var(--hair);border-bottom:0;padding-top:10px}
+}
+@media (max-width:960px){
+  .cs-facts{column-gap:20px}
+}
+@media (max-width:600px){
+  .cs-facts{grid-template-columns:1fr 1fr}
+  .cs-flow{padding-top:4px}
+}
+
+/* ---------- sections: rail + flow ---------- */
+.cs-sec{padding-top:clamp(64px,10vh,112px)}
+.cs-grid{
+  display:grid;grid-template-columns:var(--cs-rail) minmax(0,1fr);
+  column-gap:var(--cs-gap);align-items:start}
+.cs-label{
+  position:static;
+  font-weight:500;font-size:19px;line-height:1.3;letter-spacing:-.02em;
+  padding-top:14px;border-top:2px solid var(--leaf);
+  max-width:20ch;text-wrap:balance}
+/* the intro has no name; its rail stays empty */
+.cs-intro .cs-label{border:0}
+
+.cs-flow{min-width:0;padding-top:12px}
+.cs-flow > *{max-width:var(--cs-measure)}
+.cs-flow > * + *{margin-top:20px}
+
+.cs-flow p,.cs-flow li{
+  font-size:16.5px;line-height:1.7;letter-spacing:-.18px;color:var(--ink)}
+.cs-intro .cs-flow > p:first-child{
+  font-size:clamp(19px,1.7vw,22px);line-height:1.5;letter-spacing:-.02em}
+.cs-flow strong{font-weight:500}
+
+.cs-flow h3{
+  font-weight:500;font-size:17px;line-height:1.35;letter-spacing:-.12px;
+  margin-top:48px}
+.cs-flow h3 + *{margin-top:8px}
+.cs-flow h3 .k{display:block;font-weight:400;font-size:13px;color:var(--ink-2);margin-bottom:4px}
+
+/* emphasis carried over from the original pages */
+.hl{background:linear-gradient(transparent 62%,rgba(77,228,241,.38) 62%)}
+
+.cs-flow > ul{list-style:none;display:grid;gap:8px;padding:0}
+.cs-flow > ul > li{position:relative;padding-left:22px}
+.cs-flow > ul > li::before{
+  content:'';position:absolute;left:2px;top:.72em;width:6px;height:6px;background:var(--leaf)}
+
+.cs-flow .pull{
+  margin-top:40px;margin-bottom:12px;max-width:30ch;
+  font-weight:500;font-size:clamp(22px,2.3vw,27px);line-height:1.3;letter-spacing:-.028em;
+  padding-left:22px;border-left:2px solid var(--leaf)}
+.cs-flow .pull + *{margin-top:32px}
+
+/* ---------- wide things: the work spans rail and flow ---------- */
+.cs-flow > :is(.shot,.pair,.logo-grid,.stats,.ba,.findings,.pairs-table){
+  max-width:none;
+  margin-left:calc(-1 * var(--cs-reach));
+  width:calc(100% + var(--cs-reach));
+  margin-top:40px}
+.cs-flow > :is(.shot,.pair,.logo-grid,.stats,.ba,.findings,.pairs-table) + *{margin-top:40px}
+.cs-flow > .shot + .shot,
+.cs-flow > .shot + .pair,
+.cs-flow > .pair + .shot{margin-top:16px}
+/* phone screenshots and the narrow end card stay in the text column */
+.cs-flow > .shot.narrow{margin-left:0;width:auto;max-width:340px}
+
+.shot{margin:0}
+.shot img,.shot video,.shot iframe{
+  display:block;width:100%;height:auto;background:var(--surface)}
+.shot iframe{aspect-ratio:16/9;border:0}
+.shot figcaption{
+  margin-top:12px;font-size:13.5px;line-height:1.55;color:var(--ink-2);
+  max-width:var(--cs-measure);margin-left:var(--cs-reach)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pair .shot figcaption{margin-left:0}
+
+/* ---------- Ola: five research findings ---------- */
+.findings{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:0 var(--cs-gap);border-top:1px solid var(--hair)}
+.findings > div{padding:22px 0 26px;border-bottom:1px solid var(--hair-soft)}
+.findings h3{margin:0 0 8px;font-weight:500;font-size:17px;line-height:1.35;letter-spacing:-.12px;max-width:34ch}
+.findings p{font-size:15px;line-height:1.65;color:var(--ink-2)}
+
+/* ---------- before the redesign ---------- */
+.ba{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.ba-item{display:grid;grid-template-rows:auto 1fr;background:var(--surface)}
+.ba-item > img{
+  display:block;width:auto;max-width:62%;max-height:440px;height:auto;
+  margin:36px auto 0;box-shadow:0 1px 0 var(--hair-soft)}
+.ba-item > div{padding:24px 28px 28px}
+.tag-before{font-size:13px;color:var(--ink-2);margin-bottom:4px}
+.ba-item h3{margin:0 0 8px;font-weight:500;font-size:17px;letter-spacing:-.12px}
+.ba-item p{font-size:15px;line-height:1.6;color:var(--ink-2)}
+
+/* ---------- Swiggy: each worry beside the milestone that answers it ---------- */
+.pairs-table table{width:100%;border-collapse:collapse}
+.pairs-table th{
+  text-align:left;font-weight:400;font-size:13px;color:var(--ink-2);
+  padding:0 0 12px;border-bottom:1px solid var(--hair)}
+.pairs-table td{
+  width:50%;padding:16px 24px 16px 0;vertical-align:top;
+  font-size:16.5px;line-height:1.45;border-bottom:1px solid var(--hair-soft)}
+.pairs-table td:first-child{color:var(--ink-2)}
+.pairs-table td:last-child{font-weight:500}
+
+/* ---------- FrontRow: logoform sketches ---------- */
+.logo-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px}
+.logo-grid div{
+  display:flex;align-items:center;justify-content:center;aspect-ratio:1;
+  background:#fff;padding:24%}
+.logo-grid img{display:block;width:100%;height:100%;object-fit:contain}
+.logo-grid.marks-wide{grid-template-columns:repeat(3,minmax(0,1fr))}
+.logo-grid.marks-wide div{aspect-ratio:2/1;padding:12% 16%}
+
+/* ---------- results ---------- */
+.stats{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  border-top:2px solid var(--leaf)}
+.stats > div{padding:22px 24px 4px 0}
+.stats .num{
+  font-weight:500;font-size:clamp(40px,4.6vw,60px);line-height:1;letter-spacing:-.05em;
+  font-variant-numeric:tabular-nums}
+.stats .desc{margin-top:10px;font-size:14px;color:var(--ink-2)}
+
+/* ---------- where to find it ---------- */
+.cs-flow .get{display:flex;flex-wrap:wrap;gap:10px}
+.cs-flow .get a{
+  display:inline-flex;align-items:center;min-height:40px;padding:0 16px;
+  border:1px solid var(--hair);font-size:14px;transition:background .18s ease,border-color .18s ease}
+.cs-flow .get a:hover{background:var(--surface);border-color:var(--ink)}
+
+/* ---------- end: other case studies, then hello ---------- */
+.cs-next{margin-top:clamp(96px,14vh,150px);border-top:1px solid var(--hair);padding-top:28px}
+.cs-next-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.cs-next-list a{display:block;padding:18px 0 4px;border-top:1px solid var(--hair-soft);transition:opacity .18s ease}
+.cs-next-list a:hover{opacity:.62}
+.cs-next-list .n{display:block;font-weight:500;font-size:19px;letter-spacing:-.02em}
+.cs-next-list .t{display:block;margin-top:4px;font-size:14px;line-height:1.45;color:var(--ink-2)}
+
+.cs-hello{padding-top:clamp(72px,10vh,110px);padding-bottom:clamp(80px,12vh,128px)}
+.cs-hello .big{
+  display:inline-block;font-weight:500;font-size:clamp(40px,5.4vw,64px);line-height:1;
+  letter-spacing:-.035em;transition:opacity .18s ease}
+.cs-hello .big:hover{opacity:.6}
+.cs-hello .links{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:28px;font-size:14px;color:var(--ink-2)}
+.cs-hello .links a:hover{color:var(--ink)}
+
+/* ---------- small screens: one column, nothing reaches ---------- */
+@media (max-width:960px){
+  .cs-grid{grid-template-columns:1fr}
+  .cs-label{position:static;max-width:none;margin-bottom:6px}
+  .cs-intro .cs-label{display:none}
+  .cs-flow > :is(.shot,.pair,.logo-grid,.stats,.ba,.findings,.pairs-table){margin-left:0;width:100%}
+  .shot figcaption{margin-left:0}
+  .cs-next-list{grid-template-columns:1fr}
+}
+@media (max-width:720px){
+  .findings,.ba,.pair{grid-template-columns:1fr}
+  .logo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .logo-grid.marks-wide{grid-template-columns:1fr}
+  .cs-flow p,.cs-flow li{font-size:16px}
+  .pairs-table td{font-size:15px;padding-right:14px}
+}
+.cs-next-label{font-weight:500;font-size:19px;letter-spacing:-.02em;margin-bottom:14px}
+
+/* ============================================================
+   Entri: the work, cut out of its boards.
+   Stages take their colour from the course covers themselves.
+   ============================================================ */
+:root{
+  --entri-blue:#5FAAD3;
+  --entri-coral:#F15C5D;
+  --entri-sun:#FFDA32;
+  --entri-plum:#8A4B9D;
+  --stage-ink:#13253A;   /* 6:1 on blue, 4.7:1 on coral, 13:1 on sun */
+}
+
+/* ---------- hero: a shelf of covers, edge to edge ---------- */
+.cs-hero-shelf{
+  margin-left:calc(50% - 50vw);width:100vw;overflow:hidden;
+  padding:8px 0 44px}
+.shelf{
+  list-style:none;display:flex;justify-content:center;gap:clamp(10px,1.2vw,18px)}
+.shelf li{flex:0 0 clamp(108px,12.5vw,176px)}
+.shelf li:nth-child(even){margin-top:clamp(18px,2.6vw,40px)}
+.shelf img{
+  display:block;width:100%;height:auto;border-radius:8px;
+  box-shadow:0 18px 30px -18px rgba(19,37,58,.55)}
+/* the page's one orchestrated moment: the shelf fills, left to right */
+@media (prefers-reduced-motion:no-preference){
+  .shelf li{animation:shelf-in .7s cubic-bezier(.2,.7,.2,1) both}
+  .shelf li:nth-child(1){animation-delay:.05s}.shelf li:nth-child(2){animation-delay:.1s}
+  .shelf li:nth-child(3){animation-delay:.15s}.shelf li:nth-child(4){animation-delay:.2s}
+  .shelf li:nth-child(5){animation-delay:.25s}.shelf li:nth-child(6){animation-delay:.3s}
+  .shelf li:nth-child(7){animation-delay:.35s}.shelf li:nth-child(8){animation-delay:.4s}
+  .shelf li:nth-child(9){animation-delay:.45s}.shelf li:nth-child(10){animation-delay:.5s}
+}
+@keyframes shelf-in{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+/* wide Entri blocks join the full-width set */
+.cs-flow > :is(.stage,.comp,.swap){
+  max-width:none;margin-left:calc(-1 * var(--cs-reach));
+  width:calc(100% + var(--cs-reach));margin-top:40px}
+.cs-flow > :is(.stage,.comp,.swap) + *{margin-top:40px}
+.cs-flow > .swap + .stage,.cs-flow > .stage + .stage{margin-top:16px}
+
+.cs-flow .sub{margin-top:4px;font-size:18px;line-height:1.45;letter-spacing:-.02em;color:var(--ink-2)}
+
+/* ---------- competitive landscape, rebuilt as a diagram ---------- */
+.comp{margin:0}
+.comp-title{font-size:13px;color:var(--ink-2);margin-bottom:16px}
+.comp-band,.comp-apps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.comp-common{
+  grid-column:1 / 4;display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+  padding-bottom:14px;border-bottom:2px solid var(--entri-coral)}
+.comp-common span,.comp-diff span{
+  font-size:14px;font-weight:500;padding:8px 12px;line-height:1.3}
+.comp-common span{background:rgba(241,92,93,.14)}
+.comp-common em{flex-basis:100%;font-style:normal;font-size:13px;color:var(--ink-2);order:-1}
+.comp-diff{display:flex;flex-direction:column;gap:8px;padding-bottom:14px;border-bottom:2px solid #E0B800}
+.comp-diff em{font-style:normal;font-size:13px;color:var(--ink-2)}
+.comp-diff span{background:var(--entri-sun)}
+.comp-apps{margin-top:22px}
+.comp-app{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500;margin-bottom:14px}
+.comp-app img{width:28px;height:28px;border-radius:7px}
+.comp-apps > div > img{
+  display:block;width:100%;height:auto;border-radius:12px 12px 0 0;
+  -webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
+.comp-apps .is-entri .comp-app{box-shadow:inset 0 -2px 0 var(--entri-sun);padding-bottom:6px;margin-bottom:8px}
+
+/* ---------- old design vs new design, tile rows ---------- */
+.swap{display:grid;gap:22px}
+.swap-row{display:grid;grid-template-columns:minmax(0,var(--cs-rail)) 1fr;gap:var(--cs-gap);align-items:center}
+.swap-label{font-size:14px;color:var(--ink-2)}
+.swap ul{list-style:none;display:flex;flex-wrap:wrap;gap:12px}
+.swap img{display:block;height:auto;border-radius:8px}
+.swap .is-before ul img{width:92px}
+.swap .covers img{width:112px;box-shadow:0 14px 24px -16px rgba(19,37,58,.6)}
+.swap .thumbs-old{gap:10px}
+.swap .thumbs-old img{width:138px;border-radius:8px}
+
+/* ---------- stages: coloured fields for screens ---------- */
+.stage{
+  display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;
+  gap:clamp(24px,4vw,56px);padding:clamp(28px,5vw,64px) clamp(20px,4vw,56px)}
+.stage-blue{background:var(--entri-blue)}
+.stage-coral{background:var(--entri-coral)}
+.stage-sun{background:var(--entri-sun)}
+.stage-plum{background:var(--entri-plum)}
+.stage .phones{margin:0;display:flex;flex-direction:column;align-items:center}
+.stage .phones > div{display:flex;gap:clamp(14px,2vw,24px);align-items:flex-end}
+.stage .phones figcaption{
+  margin-top:16px;max-width:30ch;text-align:center;
+  font-size:14px;font-weight:500;line-height:1.4;color:var(--stage-ink)}
+.stage .phones img,.stage .phone-img{
+  display:block;width:clamp(150px,19vw,236px);height:auto;border-radius:14px;
+  box-shadow:0 30px 50px -28px rgba(19,37,58,.6),0 0 0 1px rgba(19,37,58,.08)}
+/* the before screen steps back half a pace */
+.stage .phones:not(.is-after) img{width:clamp(130px,16vw,204px);opacity:.92}
+
+.stage-study{align-items:flex-start}
+.study-col{display:grid;gap:22px;justify-items:center}
+.study-banner{display:block;width:clamp(170px,22vw,280px);height:auto;border-radius:10px;
+  box-shadow:0 20px 34px -22px rgba(19,37,58,.6)}
+
+.thumbs-new{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:100%;max-width:980px}
+.thumbs-new img{display:block;width:100%;height:auto;border-radius:10px;
+  box-shadow:0 20px 34px -22px rgba(0,0,0,.55)}
+
+/* ---------- Super Quiz: badge beside its story ---------- */
+.quiz-head{display:grid;grid-template-columns:120px minmax(0,1fr);gap:28px;align-items:start;margin-top:48px}
+.quiz-head .quiz-badge{display:block;width:100%;height:auto;margin-top:6px}
+.quiz-head h3{margin-top:0}
+.quiz-head p + p{margin-top:16px}
+
+/* ---------- credits ---------- */
+.credits{display:grid;gap:0;border-top:1px solid var(--hair)}
+.credits > div{display:grid;grid-template-columns:180px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--hair-soft)}
+.credits dt{font-size:14px;color:var(--ink-2)}
+.credits dd{font-size:16px}
+
+@media (max-width:960px){
+  .cs-flow > :is(.stage,.comp,.swap){margin-left:0;width:100%}
+  .swap-row{grid-template-columns:1fr;gap:10px}
+}
+@media (max-width:720px){
+  .comp-band,.comp-apps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .comp-common{grid-column:1 / -1}
+  .comp-diff{grid-column:1 / -1}
+  .stage .phones > div{gap:10px}
+  .stage .phones img,.stage .phone-img{width:clamp(120px,38vw,180px)}
+  .stage .phones:not(.is-after) img{width:clamp(120px,38vw,180px)}
+  .thumbs-new{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .quiz-head{grid-template-columns:72px 1fr;gap:16px}
+  .credits > div{grid-template-columns:1fr;gap:2px}
+  .shelf li:nth-child(n+7){display:none}
+}
+
+/* ============================================================
+   Swiggy, OlaPlay, FrontRow: the same cut-out approach.
+   ============================================================ */
+:root{
+  --swiggy-orange:#F88720;
+  --swiggy-sand:#E9E5DD;
+  --olaplay-purple:#47265F;
+  --fr-ink:#1E1B1C;
+  --fr-purple:#3D107E;
+  --fr-amber:#FEB330;
+}
+@font-face{
+  font-family:'Hanken Grotesk';font-style:normal;font-weight:400;font-display:swap;
+  src:url(https://cdn.jsdelivr.net/fontsource/fonts/hanken-grotesk@latest/latin-400-normal.woff2) format('woff2');
+}
+
+.cs-flow > :is(.flow,.stages,.navcompare,.fr-marks,.fr-bar,.fr-type){
+  max-width:none;margin-left:calc(-1 * var(--cs-reach));
+  width:calc(100% + var(--cs-reach));margin-top:40px}
+.cs-flow > :is(.flow,.stages,.navcompare,.fr-marks,.fr-bar,.fr-type) + *{margin-top:40px}
+.cs-flow > .flow + .shot,.cs-flow > .stage + .stage{margin-top:16px}
+
+/* ---------- old vs redesign: screens on a shared stage, story underneath ----------
+   The old screen sits on a muted stage, the redesign on the brand's colour,
+   so before and after read at a glance. */
+.flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:0}
+.flow.flow-two{grid-template-columns:repeat(2,minmax(0,1fr));max-width:calc(2 * 340px)}
+.flow-col{margin:0;display:grid;grid-template-rows:auto 1fr}
+.flow-shot{display:flex;justify-content:center;align-items:flex-end;padding:44px 20px}
+.flow-swiggy .flow-shot{background:var(--swiggy-orange)}
+.flow-swiggy .is-old .flow-shot{background:var(--swiggy-sand)}
+.flow-shot img{
+  display:block;width:min(100%,250px);height:auto;border-radius:12px;
+  box-shadow:0 26px 44px -26px rgba(19,37,58,.6),0 0 0 1px rgba(19,37,58,.08)}
+.flow-col figcaption{padding:18px 24px 0 0}
+.flow-col figcaption p{font-size:15px;line-height:1.6;color:var(--ink-2)}
+.flow-col figcaption p + p{margin-top:10px}
+.flow-col figcaption strong{color:var(--ink);font-weight:500}
+.flow-tag{display:block;font-size:13px;font-weight:500;color:var(--ink);margin-bottom:6px}
+.flow-col:not(.is-old):not(:has(.flow-tag)) figcaption{padding-top:calc(18px + 13px * 1.4 + 6px)}
+
+/* ---------- Swiggy: four stages of an order, with the screen they live on ---------- */
+.stages{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,320px);gap:var(--cs-gap);align-items:start}
+.stages h3{margin:0 0 20px}
+.stages ol{list-style:none;counter-reset:st;display:grid;gap:0;border-top:1px solid var(--hair)}
+.stages li{
+  counter-increment:st;display:grid;grid-template-columns:28px 230px minmax(0,1fr);gap:20px;
+  padding:22px 0;border-bottom:1px solid var(--hair-soft);align-items:start}
+.stages li::before{content:counter(st);font-size:14px;font-weight:500;color:var(--swiggy-orange);padding-top:2px}
+.stages li img{display:block;width:100%;height:auto;border-radius:6px;box-shadow:0 0 0 1px var(--hair-soft),0 14px 24px -18px rgba(19,37,58,.5)}
+.stages li p{font-size:15px;line-height:1.6;color:var(--ink-2)}
+.stages li p + p{margin-top:8px}
+.stages-phone{position:sticky;top:96px;background:var(--swiggy-orange);padding:36px 28px}
+.stages-phone img{display:block;width:100%;height:auto;border-radius:12px;box-shadow:0 26px 44px -26px rgba(19,37,58,.6)}
+
+/* ---------- OlaPlay ---------- */
+.stage-olaplay{background:var(--olaplay-purple);padding:clamp(28px,5vw,72px)}
+.stage-olaplay .tablet{display:block;width:min(100%,960px);height:auto}
+.navcompare{display:grid;gap:28px;background:var(--surface);padding:clamp(24px,4vw,48px)}
+.navcompare figure{margin:0;display:grid;gap:12px;justify-items:center}
+.navcompare figcaption{font-size:14px;font-weight:500;color:var(--ink)}
+.navcompare .is-old figcaption{color:var(--ink-2)}
+.navcompare img{display:block;width:min(100%,920px);height:auto;mix-blend-mode:multiply}
+
+/* ---------- FrontRow ---------- */
+.fr-marks{display:grid;gap:2px}
+.fr-marks img{display:block;width:100%;height:auto}
+.fr-marks-row{display:grid;grid-template-columns:3fr 1fr;gap:2px}
+.fr-marks-row img{height:100%;object-fit:cover}
+.fr-marks .fr-icon{background:#FAFAFA;object-fit:contain}
+
+.cs-flow .fr-statement{
+  margin-top:72px;max-width:none;
+  font-weight:500;font-size:clamp(34px,5vw,64px);line-height:1.05;letter-spacing:-.04em}
+.cs-flow .fr-statement span{display:block;padding-left:clamp(40px,10vw,160px);color:var(--fr-purple)}
+.fr-bar{display:flex;height:clamp(40px,6vw,72px)}
+.fr-bar span{display:block;flex-basis:0}
+.cs-flow > .fr-statement + .fr-bar{margin-top:28px}
+
+.fr-type{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:var(--cs-gap);
+  background:#FAFAFA;padding:clamp(24px,4vw,56px);box-shadow:inset 0 0 0 1px var(--hair-soft)}
+.fr-type h3{margin:0 0 10px;font-family:'Hanken Grotesk',var(--sans);font-weight:400;font-size:28px;letter-spacing:-.01em}
+.fr-type-spec p{font-size:15px;line-height:1.6;color:var(--ink-2)}
+.fr-type-spec p + p{margin-top:10px}
+.fr-type dl{margin-top:18px;border-top:1px solid var(--hair-soft)}
+.fr-type dl > div{display:grid;grid-template-columns:170px 1fr;gap:12px;padding:8px 0;border-bottom:1px solid var(--hair-soft);font-size:14px}
+.fr-type dt{color:var(--ink-2)}
+.fr-type-sample{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-end;gap:10px;
+  font-family:'Hanken Grotesk',var(--sans);text-align:right;color:var(--fr-ink)}
+.fr-type-sample span{font-size:clamp(26px,3.6vw,48px);line-height:1.05;letter-spacing:-.01em}
+.fr-type-sample .lc{font-size:clamp(18px,2.2vw,30px);color:var(--fr-purple)}
+.fr-type-sample .num{font-size:clamp(18px,2.2vw,30px);background:var(--fr-ink);color:var(--fr-amber);padding:4px 10px}
+
+.stage-fr-ink{background:var(--fr-ink)}
+.stage-fr-purple{background:var(--fr-purple)}
+.fr-learn{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(24px,4vw,56px);align-items:start;justify-content:stretch}
+.fr-learn-copy p{color:rgba(255,255,255,.78);font-size:15px;line-height:1.6;max-width:44ch}
+.fr-learn-copy p + p{margin-top:12px}
+.cs-flow .fr-learn-copy .fr-learn-title{color:#fff;font-weight:500;font-size:clamp(32px,4.4vw,56px);line-height:1.05;letter-spacing:-.035em;margin-bottom:18px}
+.fr-phone{display:block;width:min(100%,300px);height:auto;margin-top:36px}
+.fr-courses{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.fr-courses li:nth-child(3n+2){margin-top:40px}
+.fr-courses img{display:block;width:100%;height:auto;border-radius:8px}
+
+.fr-experts{flex-direction:column;align-items:stretch;gap:24px;padding-left:0;padding-right:0;padding-bottom:0}
+.cs-flow .fr-experts-title{text-align:center;color:#fff;font-weight:500;font-size:clamp(22px,2.6vw,32px);letter-spacing:-.02em}
+.fr-experts-title span{display:block;margin-top:6px;font-weight:400;font-size:15px;letter-spacing:0;color:rgba(255,255,255,.7)}
+.fr-illus{display:block;width:100%;height:auto}
+
+@media (max-width:960px){
+  .cs-flow > :is(.flow,.stages,.navcompare,.fr-marks,.fr-bar,.fr-type){margin-left:0;width:100%}
+  .stages{grid-template-columns:1fr}
+  .stages-phone{position:static;max-width:320px}
+  .fr-learn,.fr-type{grid-template-columns:1fr}
+  .fr-type-sample{align-items:flex-start;text-align:left}
+}
+@media (max-width:720px){
+  .flow{grid-template-columns:1fr}
+  .flow.flow-two{grid-template-columns:1fr}
+  .flow-col + .flow-col{margin-top:24px}
+  .flow-col:not(.is-old):not(:has(.flow-tag)) figcaption{padding-top:16px}
+  .stages li{grid-template-columns:24px 1fr}
+  .stages li div{grid-column:2}
+  .fr-courses{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fr-courses li:nth-child(3n+2){margin-top:0}
+  .fr-courses li:nth-child(even){margin-top:28px}
+  .fr-type dl > div{grid-template-columns:1fr;gap:2px}
+}
+.stage-olaplay .tablet{border-radius:clamp(14px,2vw,26px);box-shadow:0 40px 70px -40px rgba(0,0,0,.7)}
+
+/* a video with its own light backdrop, melted into the sand stage */
+.stage-swiggy-sand{background:#F3F3F3;padding-top:0;padding-bottom:0}
+.stage video.blend{display:block;width:min(100%,640px);height:auto}
